@@ -3,18 +3,16 @@
   .flex.column.items-center.full-width
     q-img.rounded-borders(:src="'assets/logo.png'" width="140px" height="140px")
     .text-h4.q-mt-sm BelkaScope
-    q-input.q-mt-xl.rounded-border.full-width(standout dense v-model="search" :style="'max-width: 360px;'")
-      template(v-slot:append)
-        q-btn(flat dense icon="search")
-        q-btn.q-ml-sm(flat dense icon="center_focus_weak")
+    AuthSearchInput
 
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import AuthSearchInput from 'src/components/auth-search-input/index.vue'
 
 interface HomePageData {
-  search: string;
+  search: string
 }
 
 export default defineComponent({
@@ -22,11 +20,13 @@ export default defineComponent({
 
   props: {},
 
-  components: {},
-  
-  data():HomePageData {
+  components: {
+    AuthSearchInput,
+  },
+
+  data(): HomePageData {
     return {
-      search: ''
+      search: '',
     }
   },
 
@@ -38,5 +38,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus">
-</style>
+<style scoped lang="stylus"></style>
