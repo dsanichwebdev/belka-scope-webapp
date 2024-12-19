@@ -4,7 +4,7 @@
     template(v-slot:append)
       q-btn(flat dense icon="search")
       q-btn.q-ml-sm(flat dense icon="center_focus_weak")
-  AuthModal(:isVisible="showAuthDialog" @onLogin="logIn" @onClose="handleHide")
+  AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
 </template>
 
 <script lang="ts">
@@ -47,8 +47,8 @@ export default defineComponent({
     },
 
     handleHide(): void {
-      this.showAuthDialog = false
       this.search = ''
+      this.showAuthDialog = false
     },
   },
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 .auth-modal
-  q-dialog(v-model="isVisible" @hide="closeModal")
+  q-dialog(v-model="isDialogVisible" @hide="closeModal")
     q-card
       q-card-section
         .text-h6 Войти с помощью
@@ -19,35 +19,38 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    onLogin: {
+    login: {
       type: Function as PropType<() => void>,
       required: true,
     },
-    onClose: {
+    close: {
       type: Function as PropType<() => void>,
       required: true,
     },
   },
-
-  components: {},
 
   data() {
-    return {}
+    return {
+      isDialogVisible: this.isVisible,
+    }
   },
 
-  computed: {},
+  watch: {
+    isVisible(newValue) {
+      this.isDialogVisible = newValue;
+    },
+  },
 
   methods: {
     handleLogin() {
-      this.$emit('onLogin')
+      this.login();
+      this.closeModal();
     },
 
     closeModal() {
-      this.$emit('onClose')
+      this.close();
     },
   },
-
-  mounted() {},
 })
 </script>
 
