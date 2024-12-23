@@ -4,14 +4,14 @@
     q-card.q-pa-md
       q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
         .text-h6.text-weight-regular Войти с помощью
-      q-card
-        q-btn(flat @click="handleLogin('google')")
+      q-card.flex.justify-between.gap-1
+        q-btn(flat dense @click="handleLogin('google')")
           q-img(:src="'/icons/google.png'" width="32px" height="32px")
-        q-btn(flat @click="handleLogin('vk')")
+        q-btn(flat dense @click="handleLogin('vk')")
           q-img(:src="'/icons/vk.png'" width="32px" height="32px")
-        q-btn(flat @click="handleLogin('yandex')")
+        q-btn(flat dense @click="handleLogin('yandex')")
           q-img(:src="'/icons/yandex.png'" width="32px" height="32px")
-        q-btn(flat @click="handleLogin('mailru')")
+        q-btn(flat dense @click="handleLogin('mailru')")
           q-img(:src="'/icons/mail-ru.webp'" width="32px" height="32px")
 </template>
 
