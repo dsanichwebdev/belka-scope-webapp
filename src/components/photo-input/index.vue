@@ -1,11 +1,11 @@
 <template lang="pug">
 .photo-capture-button.flex.flex-column.items-center
-  .q-py-md.q-px-xs(v-if="!photoUrl" :style="'border: 1px solid; border-radius: 10px;'")
+  .q-py-md.q-px-xs(v-if="!photoUrl" :style="'border: 3px solid; border-radius: 10px;'")
     q-btn.rounded-border(flat @click="openPhotoOptions")
       q-img(:src="$q.dark.isActive ? '/icons/camera.png' : '/icons/camera-dark.png'" width="80px" height="80px")
-  .relative-position(v-if="photoUrl")
-    q-img.q-my-md(:src="photoUrl" style="max-width: 100%; border-radius: 8px; min-width: 280px;")
-    q-btn.absolute.bg-white(icon="delete" color="black" dense flat @click="handleDeletePhoto" :style="'bottom: 20px; right: 4px;'")
+  .relative-position.full-width(v-if="photoUrl")
+    q-img.q-my-sm(:src="photoUrl" style="max-width: 100%; border-radius: 8px; min-width: 280px;")
+    q-btn.absolute.bg-white(icon="delete" color="black" dense flat @click="handleDeletePhoto" :style="'bottom: 12px; right: 4px;'")
   q-dialog(v-model="showFileDialog")
     q-card
       q-card-section
