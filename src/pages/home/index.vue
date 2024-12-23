@@ -23,7 +23,7 @@ export default defineComponent({
 
   components: {
     AuthSearchInput,
-    SearchProducts
+    SearchProducts,
   },
 
   data(): HomePageData {

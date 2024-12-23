@@ -44,18 +44,18 @@ export default defineComponent({
 
   watch: {
     isVisible(newValue) {
-      this.isDialogVisible = newValue;
+      this.isDialogVisible = newValue
     },
   },
 
   methods: {
     handleLogin(service: string) {
-      this.login(service);
-      this.closeModal();
+      this.login(service)
+      this.closeModal()
     },
 
     closeModal() {
-      this.close();
+      this.close()
     },
   },
 })

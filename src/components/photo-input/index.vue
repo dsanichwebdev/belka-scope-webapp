@@ -75,7 +75,7 @@ export default defineComponent({
 
     handleDeletePhoto(): void {
       this.photoUrl = ''
-    }
+    },
   },
 })
 </script>

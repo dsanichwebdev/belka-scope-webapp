@@ -7,27 +7,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import PhotoInput from 'src/components/photo-input/index.vue';
+import PhotoInput from 'src/components/photo-input/index.vue'
 
 export default defineComponent({
   name: 'SearchProducts',
 
   components: {
-    PhotoInput
+    PhotoInput,
   },
 
   data() {
     return {
-      searchMessage: ''
+      searchMessage: '',
     }
   },
 
   methods: {
-    handleSearch(): void {
-    },
+    handleSearch(): void {},
   },
 })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
