@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'AuthPage',
@@ -11,7 +11,7 @@ export default defineComponent({
   props: {},
 
   components: {},
-  
+
   data() {
     return {}
   },
@@ -24,5 +24,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus">
-</style>
+<style scoped lang="stylus"></style>
