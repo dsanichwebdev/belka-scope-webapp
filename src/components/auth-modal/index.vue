@@ -1,11 +1,18 @@
 <template lang="pug">
 .auth-modal
   q-dialog(v-model="isDialogVisible" @hide="closeModal")
-    q-card
-      q-card-section
-        .text-h6 Войти с помощью
-      q-card-actions
-        q-btn(label="Закрыть", @click="closeModal")
+    q-card.q-pa-md
+      q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
+        .text-h6.text-weight-regular Войти с помощью
+      q-card
+        q-btn(flat @click="handleLogin('google')")
+          q-img(:src="'/icons/google.png'" width="32px" height="32px")
+        q-btn(flat @click="handleLogin('vk')")
+          q-img(:src="'/icons/vk.png'" width="32px" height="32px")
+        q-btn(flat @click="handleLogin('yandex')")
+          q-img(:src="'/icons/yandex.png'" width="32px" height="32px")
+        q-btn(flat @click="handleLogin('mailru')")
+          q-img(:src="'/icons/mail-ru.webp'" width="32px" height="32px")
 </template>
 
 <script lang="ts">
@@ -20,7 +27,7 @@ export default defineComponent({
       required: true,
     },
     login: {
-      type: Function as PropType<() => void>,
+      type: Function as PropType<(service: string) => void>,
       required: true,
     },
     close: {
@@ -42,8 +49,8 @@ export default defineComponent({
   },
 
   methods: {
-    handleLogin() {
-      this.login();
+    handleLogin(service: string) {
+      this.login(service);
       this.closeModal();
     },
 

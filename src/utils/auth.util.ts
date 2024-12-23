@@ -1,7 +1,7 @@
 type AuthUtilType = {
   isAuthenticated: boolean
   checkAuth: () => boolean
-  logIn: () => void
+  logIn: (service: string) => void
   logOut: () => void
 }
 
@@ -12,7 +12,8 @@ export const authUtil: AuthUtilType = {
     return this.isAuthenticated
   },
 
-  logIn() {
+  logIn(service: string) {
+    console.log(`Successfull login with ${service}!`)
     this.isAuthenticated = true
   },
 

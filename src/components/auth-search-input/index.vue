@@ -37,8 +37,8 @@ export default defineComponent({
       }
     },
 
-    logIn(): void {
-      authUtil.logIn()
+    logIn(service: string): void {
+      authUtil.logIn(service)
       this.showAuthDialog = false
     },
 
