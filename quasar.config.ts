@@ -88,6 +88,9 @@ export default defineConfig((/* ctx */) => {
       cssAddon: true,
       config: {
         dark: 'auto',
+        brand: {
+          primary: '#ECC56A',
+        },
       },
 
       // iconSet: 'material-icons', // Quasar icon set
