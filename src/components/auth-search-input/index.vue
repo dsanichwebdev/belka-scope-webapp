@@ -1,9 +1,9 @@
 <template lang="pug">
 .auth-search-input.full-width.flex.justify-center
-  q-input.q-mt-xl.rounded-border.full-width(standout dense v-model="search" ref="searchInput" :style="'max-width: 360px;'" @update:model-value="checkAuth")
+  q-input.q-mt-xl.rounded-border.full-width(bg-color="primary" color="black" standout dense v-model="search" ref="searchInput" :style="'max-width: 360px;'" @update:model-value="checkAuth")
     template(v-slot:append)
-      q-btn(flat dense icon="search")
-      q-btn.q-ml-sm(flat dense icon="center_focus_weak")
+      q-btn(flat color="black" dense icon="search")
+      q-btn.q-ml-sm(flat color="black" dense icon="center_focus_weak")
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
 </template>
 
