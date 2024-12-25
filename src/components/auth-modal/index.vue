@@ -4,22 +4,19 @@
     q-card.q-pa-md
       q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
         .text-h6.text-weight-regular Войти с помощью
-      q-card.flex.justify-between.gap-1
-        q-btn(flat dense @click="handleLogin('google')")
-          q-img(:src="'/icons/google.png'" width="32px" height="32px")
-        q-btn(flat dense @click="handleLogin('vk')")
-          q-img(:src="'/icons/vk.png'" width="32px" height="32px")
-        q-btn(flat dense @click="handleLogin('yandex')")
-          q-img(:src="'/icons/yandex.png'" width="32px" height="32px")
-        q-btn(flat dense @click="handleLogin('mailru')")
-          q-img(:src="'/icons/mail-ru.webp'" width="32px" height="32px")
+      AuthButtons(@handleLogin="handleLogin")
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
+import AuthButtons from '../auth-buttons/index.vue'
 
 export default defineComponent({
   name: 'AuthModal',
+
+  components: {
+    AuthButtons,
+  },
 
   props: {
     isVisible: {
