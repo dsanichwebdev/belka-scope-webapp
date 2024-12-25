@@ -1,14 +1,18 @@
 <template lang="pug">
 .auth-buttons
-  .flex.justify-between.gap-1
-    q-btn(flat dense @click="$emit('handleLogin', 'google')")
+  .flex.justify-between(:class="{ 'expanded-gap': expanded }")
+    q-btn(flat :no-caps="expanded" dense @click="$emit('handleLogin', 'google')")
       q-img(:src="'/icons/google.png'" width="32px" height="32px")
-    q-btn(flat dense @click="$emit('handleLogin', 'vk')")
+      .text-h6.q-ml-sm(v-if="expanded") Google
+    q-btn(flat :no-caps="expanded" dense @click="$emit('handleLogin', 'vk')")
       q-img(:src="'/icons/vk.png'" width="32px" height="32px")
-    q-btn(flat dense @click="$emit('handleLogin', 'yandex')")
+      .text-h6.q-ml-sm(v-if="expanded") ВКонтакте
+    q-btn(flat :no-caps="expanded" dense @click="$emit('handleLogin', 'yandex')")
       q-img(:src="'/icons/yandex.png'" width="32px" height="32px")
-    q-btn(flat dense @click="$emit('handleLogin', 'mailru')")
+      .text-h6.q-ml-sm(v-if="expanded") Яндекс
+    q-btn(flat :no-caps="expanded" dense @click="$emit('handleLogin', 'mailru')")
       q-img(:src="'/icons/mail-ru.webp'" width="32px" height="32px")
+      .text-h6.q-ml-sm(v-if="expanded") MailRu
 </template>
 
 <script lang="ts">
@@ -22,6 +26,10 @@ export default defineComponent({
       type: Function as PropType<(service: string) => void>,
       required: true,
     },
+    expanded: {
+      type: Boolean,
+      required: false,
+    },
   },
 
   data() {
@@ -34,4 +42,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.expanded-gap {
+  gap: 20px;
+}
+</style>
