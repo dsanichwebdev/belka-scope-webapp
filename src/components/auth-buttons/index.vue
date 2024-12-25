@@ -44,6 +44,6 @@ export default defineComponent({
 
 <style scoped lang="stylus">
 .expanded-gap {
-  gap: 20px;
+  gap: 5px;
 }
 </style>

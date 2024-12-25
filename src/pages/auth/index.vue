@@ -3,14 +3,15 @@
   .flex.column.items-center.full-width
     q-img.rounded-borders(:src="'assets/logo.png'" :width="$q.screen.gt.md ? '140px' : '100px'")
     .text-h4.q-mt-sm BelkaScope
-    .q-mt-md
-      .text-h6.text-weight-regular Войти с помощью
-      AuthButtons
+    q-card.q-mt-lg.flex.justify-center.column.items-center.q-pa-md(flat)
+      .text-h5.text-weight-regular.q-mb-sm Войти с помощью
+      AuthButtons(expanded @handleLogin="logIn")
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AuthButtons from 'src/components/auth-buttons/index.vue'
+import { authUtil } from 'src/utils/auth.util'
 
 export default defineComponent({
   name: 'AuthPage',
@@ -27,7 +28,17 @@ export default defineComponent({
 
   computed: {},
 
-  methods: {},
+  methods: {
+    checkAuth(): void {},
+
+    logIn(service: string): void {
+      authUtil.logIn(service)
+    },
+
+    logOut(): void {
+      authUtil.logOut()
+    },
+  },
 
   mounted() {},
 })
