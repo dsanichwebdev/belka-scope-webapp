@@ -39,7 +39,9 @@ export default defineComponent({
 
     logIn(service: string): void {
       authUtil.logIn(service)
-      this.showAuthDialog = false
+      if (authUtil.hasProfileData) {
+        this.showAuthDialog = false
+      }
     },
 
     logOut(): void {

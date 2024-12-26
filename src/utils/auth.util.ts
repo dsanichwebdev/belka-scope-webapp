@@ -1,5 +1,6 @@
 type AuthUtilType = {
   isAuthenticated: boolean
+  hasProfileData: boolean
   checkAuth: () => boolean
   logIn: (service: string) => void
   logOut: () => void
@@ -7,6 +8,7 @@ type AuthUtilType = {
 
 export const authUtil: AuthUtilType = {
   isAuthenticated: false,
+  hasProfileData: false,
 
   checkAuth(): boolean {
     return this.isAuthenticated

@@ -2,20 +2,26 @@
 .auth-modal
   q-dialog(v-model="isDialogVisible" @hide="closeModal")
     q-card.q-pa-md(flat)
-      q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
-        .text-h6.text-weight-regular Войти с помощью
-      AuthButtons(@handleLogin="handleLogin")
+      template(v-if="showProfileDataStep")
+        SettingsUserData
+      template(v-else-if="!authUtil?.isAuthenticated")
+        q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
+          .text-h6.text-weight-regular Войти с помощью
+        AuthButtons(@handleLogin="handleLogin")
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import AuthButtons from '../auth-buttons/index.vue'
+import SettingsUserData from 'src/components/settings/user-data/index.vue'
+import { authUtil } from '../../utils/auth.util'
 
 export default defineComponent({
   name: 'AuthModal',
 
   components: {
     AuthButtons,
+    SettingsUserData,
   },
 
   props: {
@@ -36,6 +42,7 @@ export default defineComponent({
   data() {
     return {
       isDialogVisible: this.isVisible,
+      showProfileDataStep: false,
     }
   },
 
@@ -48,7 +55,9 @@ export default defineComponent({
   methods: {
     handleLogin(service: string) {
       this.login(service)
-      this.closeModal()
+      if (!authUtil.hasProfileData) {
+        this.showProfileDataStep = true
+      }
     },
 
     closeModal() {
