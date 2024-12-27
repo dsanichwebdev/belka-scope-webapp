@@ -3,7 +3,7 @@
   q-dialog(v-model="isDialogVisible" @hide="closeModal")
     q-card.q-pa-md(flat)
       template(v-if="showProfileDataStep")
-        SettingsUserData
+        SettingsUserData(@closeModal="closeModal")
       template(v-else-if="!authUtil?.isAuthenticated")
         q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
           .text-h6.text-weight-regular Войти с помощью
