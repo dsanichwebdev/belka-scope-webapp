@@ -8,54 +8,54 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { authUtil } from 'src/utils/auth.util'
 import AuthModal from '../auth-modal/index.vue'
 import type { AuthService } from 'src/types/auth'
+import type { AuthSearchInputData, AuthSearchInputMethods } from 'src/types/auth-search-input'
 
 export default defineComponent({
 	name: 'AuthSearchInput',
-
-	props: {},
 
 	components: {
 		AuthModal,
 	},
 
-	data() {
-		return {
-			search: '',
-			showAuthDialog: false,
-		}
-	},
+	setup(): AuthSearchInputData & AuthSearchInputMethods {
+		const search = ref<string>('')
+		const showAuthDialog = ref<boolean>(false)
 
-	computed: {},
-
-	methods: {
-		checkAuth(): void {
+		const checkAuth = (): void => {
 			if (!authUtil.checkAuth()) {
-				this.showAuthDialog = true
+				showAuthDialog.value = true
 			}
-		},
+		}
 
-		logIn(service: AuthService): void {
+		const logIn = (service: AuthService): void => {
 			authUtil.logIn(service)
 			if (authUtil.hasProfileData) {
-				this.showAuthDialog = false
+				showAuthDialog.value = false
 			}
-		},
+		}
 
-		logOut(): void {
+		const logOut = (): void => {
 			authUtil.logOut()
-		},
+		}
 
-		handleHide(): void {
-			this.search = ''
-			this.showAuthDialog = false
-		},
+		const handleHide = (): void => {
+			search.value = ''
+			showAuthDialog.value = false
+		}
+
+		return {
+			search,
+			showAuthDialog,
+			checkAuth,
+			logIn,
+			logOut,
+			handleHide,
+		}
 	},
-
-	mounted() {},
 })
 </script>
 
