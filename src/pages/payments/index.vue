@@ -6,21 +6,10 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'PaymentsPage',
-
-  props: {},
-
-  components: {},
-
-  data() {
-    return {}
-  },
-
-  computed: {},
-
-  methods: {},
-
-  mounted() {},
+	name: 'PaymentsPage',
+	setup() {
+		return {}
+	},
 })
 </script>
 
