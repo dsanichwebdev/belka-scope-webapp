@@ -8,35 +8,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import AuthSearchInput from 'src/components/auth-search-input/index.vue'
 import SearchProducts from 'src/components/search-products/index.vue'
-
-interface HomePageData {
-  search: string
-}
+import type { HomePageData } from 'src/types/home'
 
 export default defineComponent({
-  name: 'HomePage',
+	name: 'HomePage',
+	components: {
+		AuthSearchInput,
+		SearchProducts,
+	},
+	setup() {
+		const search = ref<HomePageData['search']>('')
 
-  props: {},
+		const handleSearch = () => {
+			console.log(`Searching for: ${search.value}`)
+		}
 
-  components: {
-    AuthSearchInput,
-    SearchProducts,
-  },
-
-  data(): HomePageData {
-    return {
-      search: '',
-    }
-  },
-
-  computed: {},
-
-  methods: {},
-
-  mounted() {},
+		return {
+			search,
+			handleSearch,
+		}
+	},
 })
 </script>
 

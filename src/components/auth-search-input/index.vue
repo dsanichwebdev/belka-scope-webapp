@@ -11,50 +11,51 @@
 import { defineComponent } from 'vue'
 import { authUtil } from 'src/utils/auth.util'
 import AuthModal from '../auth-modal/index.vue'
+import type { AuthService } from 'src/types/auth'
 
 export default defineComponent({
-  name: 'AuthSearchInput',
+	name: 'AuthSearchInput',
 
-  props: {},
+	props: {},
 
-  components: {
-    AuthModal,
-  },
+	components: {
+		AuthModal,
+	},
 
-  data() {
-    return {
-      search: '',
-      showAuthDialog: false,
-    }
-  },
+	data() {
+		return {
+			search: '',
+			showAuthDialog: false,
+		}
+	},
 
-  computed: {},
+	computed: {},
 
-  methods: {
-    checkAuth(): void {
-      if (!authUtil.checkAuth()) {
-        this.showAuthDialog = true
-      }
-    },
+	methods: {
+		checkAuth(): void {
+			if (!authUtil.checkAuth()) {
+				this.showAuthDialog = true
+			}
+		},
 
-    logIn(service: string): void {
-      authUtil.logIn(service)
-      if (authUtil.hasProfileData) {
-        this.showAuthDialog = false
-      }
-    },
+		logIn(service: AuthService): void {
+			authUtil.logIn(service)
+			if (authUtil.hasProfileData) {
+				this.showAuthDialog = false
+			}
+		},
 
-    logOut(): void {
-      authUtil.logOut()
-    },
+		logOut(): void {
+			authUtil.logOut()
+		},
 
-    handleHide(): void {
-      this.search = ''
-      this.showAuthDialog = false
-    },
-  },
+		handleHide(): void {
+			this.search = ''
+			this.showAuthDialog = false
+		},
+	},
 
-  mounted() {},
+	mounted() {},
 })
 </script>
 
