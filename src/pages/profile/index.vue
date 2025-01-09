@@ -6,21 +6,10 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'ProfilePage',
-
-  props: {},
-
-  components: {},
-
-  data() {
-    return {}
-  },
-
-  computed: {},
-
-  methods: {},
-
-  mounted() {},
+	name: 'ProfilePage',
+	setup() {
+		return {}
+	},
 })
 </script>
 
