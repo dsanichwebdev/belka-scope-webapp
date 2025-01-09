@@ -11,10 +11,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { defineComponent, ref, watch, type PropType } from 'vue'
 import AuthButtons from '../auth-buttons/index.vue'
 import SettingsUserData from 'src/components/settings/user-data/index.vue'
-import { authUtil } from '../../utils/auth.util'
+import { authUtil } from 'src/utils/auth.util'
+import type { AuthModalProps } from 'src/types/auth-modal'
 
 export default defineComponent({
 	name: 'AuthModal',
@@ -39,30 +40,34 @@ export default defineComponent({
 		},
 	},
 
-	data() {
-		return {
-			isDialogVisible: this.isVisible,
-			showProfileDataStep: false,
-		}
-	},
+	setup(props: AuthModalProps) {
+		const isDialogVisible = ref<boolean>(props.isVisible)
+		const showProfileDataStep = ref<boolean>(false)
 
-	watch: {
-		isVisible(newValue) {
-			this.isDialogVisible = newValue
-		},
-	},
+		watch(
+			() => props.isVisible,
+			(newValue) => {
+				isDialogVisible.value = newValue
+			},
+		)
 
-	methods: {
-		handleLogin(service: string) {
-			this.login(service)
+		const handleLogin = (service: string) => {
+			props.login(service)
 			if (!authUtil.hasProfileData) {
-				this.showProfileDataStep = true
+				showProfileDataStep.value = true
 			}
-		},
+		}
 
-		closeModal() {
-			this.close()
-		},
+		const closeModal = () => {
+			props.close()
+		}
+
+		return {
+			isDialogVisible,
+			showProfileDataStep,
+			handleLogin,
+			closeModal,
+		}
 	},
 })
 </script>
