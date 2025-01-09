@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { authUtil } from 'src/utils/auth.util'
 import AuthModal from 'src/components/auth-modal/index.vue'
 import PhotoInput from 'src/components/photo-input/index.vue'
+import type { SearchProductsData, SearchProductsMethods } from 'src/types/search-products'
 import type { AuthService } from 'src/types/auth'
 
 export default defineComponent({
@@ -21,37 +22,42 @@ export default defineComponent({
 		AuthModal,
 	},
 
-	data() {
-		return {
-			searchMessage: '',
-			showAuthDialog: false,
+	setup(): SearchProductsData & SearchProductsMethods {
+		const searchMessage = ref<string>('')
+		const showAuthDialog = ref<boolean>(false)
+
+		const handleSearch = (): void => {
+			if (!authUtil.checkAuth()) {
+				showAuthDialog.value = true
+			}
 		}
-	},
 
-	methods: {
-		handleSearch(): void {
+		const checkAuth = (): void => {
 			if (!authUtil.checkAuth()) {
-				this.showAuthDialog = true
+				showAuthDialog.value = true
 			}
-		},
+		}
 
-		checkAuth(): void {
-			if (!authUtil.checkAuth()) {
-				this.showAuthDialog = true
-			}
-		},
-
-		logIn(service: AuthService): void {
+		const logIn = (service: AuthService): void => {
 			authUtil.logIn(service)
 			if (authUtil.hasProfileData) {
-				this.showAuthDialog = false
+				showAuthDialog.value = false
 			}
-		},
+		}
 
-		handleHide(): void {
-			this.searchMessage = ''
-			this.showAuthDialog = false
-		},
+		const handleHide = (): void => {
+			searchMessage.value = ''
+			showAuthDialog.value = false
+		}
+
+		return {
+			searchMessage,
+			showAuthDialog,
+			handleSearch,
+			checkAuth,
+			logIn,
+			handleHide,
+		}
 	},
 })
 </script>
