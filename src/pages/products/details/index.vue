@@ -1,26 +1,15 @@
 <template lang="pug">
-.products-details-page
+.products-detailspage
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'ProductsDetailsPage',
-
-  props: {},
-
-  components: {},
-
-  data() {
-    return {}
-  },
-
-  computed: {},
-
-  methods: {},
-
-  mounted() {},
+	name: 'ProductsDetailsPage',
+	setup() {
+		return {}
+	},
 })
 </script>
 

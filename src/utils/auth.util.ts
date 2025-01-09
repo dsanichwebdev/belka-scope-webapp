@@ -1,23 +1,19 @@
-type AuthUtilType = {
-  isAuthenticated: boolean
-  checkAuth: () => boolean
-  logIn: (service: string) => void
-  logOut: () => void
-}
+import type { AuthUtil, AuthService } from 'src/types/auth'
 
-export const authUtil: AuthUtilType = {
-  isAuthenticated: false,
+export const authUtil: AuthUtil = {
+	isAuthenticated: false,
+	hasProfileData: false,
 
-  checkAuth(): boolean {
-    return this.isAuthenticated
-  },
+	checkAuth(): boolean {
+		return this.isAuthenticated
+	},
 
-  logIn(service: string) {
-    console.log(`Successfull login with ${service}!`)
-    this.isAuthenticated = true
-  },
+	logIn(service: AuthService) {
+		console.log(`Successfully logged in with ${service}!`)
+		this.isAuthenticated = true
+	},
 
-  logOut() {
-    this.isAuthenticated = false
-  },
+	logOut() {
+		this.isAuthenticated = false
+	},
 }

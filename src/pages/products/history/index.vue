@@ -6,21 +6,10 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'ProductsHistoryPage',
-
-  props: {},
-
-  components: {},
-
-  data() {
-    return {}
-  },
-
-  computed: {},
-
-  methods: {},
-
-  mounted() {},
+	name: 'ProductsHistoryPage',
+	setup() {
+		return {}
+	},
 })
 </script>
 
