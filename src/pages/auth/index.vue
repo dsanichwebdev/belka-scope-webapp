@@ -12,35 +12,30 @@
 import { defineComponent } from 'vue'
 import AuthButtons from 'src/components/auth-buttons/index.vue'
 import { authUtil } from 'src/utils/auth.util'
+import type { AuthService } from 'src/types/auth'
 
 export default defineComponent({
-  name: 'AuthPage',
+	name: 'AuthPage',
+	components: {
+		AuthButtons,
+	},
+	setup() {
+		const logIn = (service: AuthService): void => {
+			authUtil.logIn(service)
+		}
 
-  props: {},
+		const logOut = (): void => {
+			authUtil.logOut()
+		}
 
-  components: {
-    AuthButtons,
-  },
+		const checkAuth = (): void => {}
 
-  data() {
-    return {}
-  },
-
-  computed: {},
-
-  methods: {
-    checkAuth(): void {},
-
-    logIn(service: string): void {
-      authUtil.logIn(service)
-    },
-
-    logOut(): void {
-      authUtil.logOut()
-    },
-  },
-
-  mounted() {},
+		return {
+			logIn,
+			logOut,
+			checkAuth,
+		}
+	},
 })
 </script>
 

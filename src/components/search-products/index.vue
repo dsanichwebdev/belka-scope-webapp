@@ -11,47 +11,48 @@ import { defineComponent } from 'vue'
 import { authUtil } from 'src/utils/auth.util'
 import AuthModal from 'src/components/auth-modal/index.vue'
 import PhotoInput from 'src/components/photo-input/index.vue'
+import type { AuthService } from 'src/types/auth'
 
 export default defineComponent({
-  name: 'SearchProducts',
+	name: 'SearchProducts',
 
-  components: {
-    PhotoInput,
-    AuthModal,
-  },
+	components: {
+		PhotoInput,
+		AuthModal,
+	},
 
-  data() {
-    return {
-      searchMessage: '',
-      showAuthDialog: false,
-    }
-  },
+	data() {
+		return {
+			searchMessage: '',
+			showAuthDialog: false,
+		}
+	},
 
-  methods: {
-    handleSearch(): void {
-      if (!authUtil.checkAuth()) {
-        this.showAuthDialog = true
-      }
-    },
+	methods: {
+		handleSearch(): void {
+			if (!authUtil.checkAuth()) {
+				this.showAuthDialog = true
+			}
+		},
 
-    checkAuth(): void {
-      if (!authUtil.checkAuth()) {
-        this.showAuthDialog = true
-      }
-    },
+		checkAuth(): void {
+			if (!authUtil.checkAuth()) {
+				this.showAuthDialog = true
+			}
+		},
 
-    logIn(service: string): void {
-      authUtil.logIn(service)
-      if (authUtil.hasProfileData) {
-        this.showAuthDialog = false
-      }
-    },
+		logIn(service: AuthService): void {
+			authUtil.logIn(service)
+			if (authUtil.hasProfileData) {
+				this.showAuthDialog = false
+			}
+		},
 
-    handleHide(): void {
-      this.searchMessage = ''
-      this.showAuthDialog = false
-    },
-  },
+		handleHide(): void {
+			this.searchMessage = ''
+			this.showAuthDialog = false
+		},
+	},
 })
 </script>
 
