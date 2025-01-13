@@ -1,7 +1,7 @@
 <template lang="pug">
 .home-page.full-width.window-height.flex.justify-center.items-center
   .flex.column.items-center.full-width
-    LogoComponent(:rounded="true" :size="'2xl'")
+    LogoComponent(:rounded="true" :size="'2xl'" :fontSize="'32px'" :fontWeight="'500'")
     AuthSearchInput(v-if="$q.screen.gt.sm")
     SearchProducts.q-mt-md(v-if="!$q.screen.gt.sm")
 </template>

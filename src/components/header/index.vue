@@ -1,6 +1,6 @@
 <template lang="pug">
 q-header(elevated).bg-header.flex.q-pa-sm
-	LogoComponent(:size="'sm'" :direction="'row'" rounded)
+	LogoComponent(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded)
 </template>
 
 <script lang="ts">

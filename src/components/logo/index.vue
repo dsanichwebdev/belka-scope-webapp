@@ -1,7 +1,10 @@
 <template lang="pug">
 div(:class="['logo-component', directionClass]")
   q-img.logo-image(:src="src" :width="computedWidth" :style="{ borderRadius: rounded ? '8px' : '0px' }")
-  div.text-theme(:class="textSizeClass") {{ text }}
+  div.text-theme(
+    :class="textSizeClass"
+    :style="[fontSizeStyle, fontWeightStyle]"
+  ) {{ text }}
 </template>
 
 <script lang="ts">
@@ -31,6 +34,14 @@ export default defineComponent({
 		rounded: {
 			type: Boolean,
 			default: false,
+		},
+		fontSize: {
+			type: String,
+			required: false,
+		},
+		fontWeight: {
+			type: String,
+			required: false,
 		},
 	},
 
@@ -66,10 +77,20 @@ export default defineComponent({
 			return textSizeMap[props.size]
 		})
 
+		const fontSizeStyle = computed(() => {
+			return props.fontSize ? { fontSize: props.fontSize } : {}
+		})
+
+		const fontWeightStyle = computed(() => {
+			return props.fontWeight ? { fontWeight: props.fontWeight } : {}
+		})
+
 		return {
 			directionClass,
 			computedWidth,
 			textSizeClass,
+			fontSizeStyle,
+			fontWeightStyle,
 		}
 	},
 
