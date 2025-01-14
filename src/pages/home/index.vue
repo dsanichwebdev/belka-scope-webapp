@@ -2,13 +2,13 @@
 .home-page.full-width.window-height.flex.justify-center.items-center
   .flex.column.items-center.full-width
     LogoComponent(:rounded="true" :size="'2xl'" :fontSize="'32px'" :fontWeight="'500'")
-    AuthSearchInput(v-if="$q.screen.gt.sm")
+    SearchProductsInput(v-if="$q.screen.gt.sm")
     SearchProducts.q-mt-md(v-if="!$q.screen.gt.sm")
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import AuthSearchInput from 'src/components/auth-search-input/index.vue'
+import SearchProductsInput from 'src/components/search-products-input/index.vue'
 import SearchProducts from 'src/components/search-products/index.vue'
 import LogoComponent from 'src/components/logo/index.vue'
 import type { HomePageData } from 'src/types/home'
@@ -16,7 +16,7 @@ import type { HomePageData } from 'src/types/home'
 export default defineComponent({
 	name: 'HomePage',
 	components: {
-		AuthSearchInput,
+		SearchProductsInput,
 		SearchProducts,
 		LogoComponent,
 	},

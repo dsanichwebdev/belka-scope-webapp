@@ -1,14 +1,15 @@
 import type { AuthService } from 'src/types/auth'
 import type { Ref } from 'vue'
 
-export interface AuthSearchInputData {
+export interface SearchProductsInputData {
 	search: Ref<string>
 	showAuthDialog: Ref<boolean>
 }
 
-export interface AuthSearchInputMethods {
+export interface SearchProductsInputMethods {
 	checkAuth: () => void
 	logIn: (service: AuthService) => void
 	logOut: () => void
 	handleHide: () => void
+	uploadPhoto: () => void
 }

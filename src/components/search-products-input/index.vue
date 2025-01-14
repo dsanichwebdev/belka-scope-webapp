@@ -1,9 +1,9 @@
 <template lang="pug">
-.auth-search-input.full-width.flex.justify-center
+.search-products-input.full-width.flex.justify-center
   q-input.q-mt-xl.rounded-border.full-width(bg-color="primary" color="black" standout dense v-model="search" ref="searchInput" :style="'max-width: 360px;'" @update:model-value="checkAuth")
     template(v-slot:append)
       q-btn(flat color="black" dense icon="search")
-      q-btn.q-ml-sm(flat color="black" dense icon="center_focus_weak")
+      q-btn.q-ml-sm(v-if="showUploadPhotoButton" flat color="black" dense icon="center_focus_weak" @click="uploadPhoto")
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
 </template>
 
@@ -12,16 +12,30 @@ import { defineComponent, ref } from 'vue'
 import { authUtil } from 'src/utils/auth.util'
 import AuthModal from '../auth-modal/index.vue'
 import type { AuthService } from 'src/types/auth'
-import type { AuthSearchInputData, AuthSearchInputMethods } from 'src/types/auth-search-input'
+import type {
+	SearchProductsInputData,
+	SearchProductsInputMethods,
+} from 'src/types/search-products-input'
 
 export default defineComponent({
-	name: 'AuthSearchInput',
+	name: 'SearchProductsInput',
 
 	components: {
 		AuthModal,
 	},
 
-	setup(): AuthSearchInputData & AuthSearchInputMethods {
+	props: {
+		needCheckAuth: {
+			type: Boolean,
+			default: true,
+		},
+		showUploadPhotoButton: {
+			type: Boolean,
+			default: false,
+		},
+	},
+
+	setup(props): SearchProductsInputData & SearchProductsInputMethods {
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
@@ -33,7 +47,7 @@ export default defineComponent({
 
 		const logIn = (service: AuthService): void => {
 			authUtil.logIn(service)
-			if (authUtil.hasProfileData) {
+			if (props.needCheckAuth && authUtil.hasProfileData) {
 				showAuthDialog.value = false
 			}
 		}
@@ -47,6 +61,10 @@ export default defineComponent({
 			showAuthDialog.value = false
 		}
 
+		const uploadPhoto = (): void => {
+			console.log('uplodaded photo for search')
+		}
+
 		return {
 			search,
 			showAuthDialog,
@@ -54,6 +72,7 @@ export default defineComponent({
 			logIn,
 			logOut,
 			handleHide,
+			uploadPhoto,
 		}
 	},
 })
