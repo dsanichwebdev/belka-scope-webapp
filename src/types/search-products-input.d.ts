@@ -12,4 +12,5 @@ export interface SearchProductsInputMethods {
 	logOut: () => void
 	handleHide: () => void
 	uploadPhoto: () => void
+	handleSearch: () => void
 }

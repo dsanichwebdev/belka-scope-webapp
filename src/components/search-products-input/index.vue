@@ -2,7 +2,7 @@
 .search-products-input.full-width.flex.justify-center
   q-input.q-mt-xl.rounded-border.full-width(bg-color="primary" color="black" standout dense v-model="search" ref="searchInput" :style="'max-width: 360px;'" @update:model-value="checkAuth")
     template(v-slot:append)
-      q-btn(flat color="black" dense icon="search")
+      q-btn(flat color="black" dense icon="search" @click="handleSearch")
       q-btn.q-ml-sm(v-if="showUploadPhotoButton" flat color="black" dense icon="center_focus_weak" @click="uploadPhoto")
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
 </template>
@@ -65,6 +65,10 @@ export default defineComponent({
 			console.log('uplodaded photo for search')
 		}
 
+		const handleSearch = () => {
+			console.log(`Searching for: ${search.value}`)
+		}
+
 		return {
 			search,
 			showAuthDialog,
@@ -73,6 +77,7 @@ export default defineComponent({
 			logOut,
 			handleHide,
 			uploadPhoto,
+			handleSearch,
 		}
 	},
 })

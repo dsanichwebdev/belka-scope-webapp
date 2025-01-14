@@ -1,3 +1,1 @@
-export interface HomePageData {
-	search: string
-}
+export interface HomePageData {} // eslint-disable-line @typescript-eslint/no-empty-object-type

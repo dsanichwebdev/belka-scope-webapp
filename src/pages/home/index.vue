@@ -7,11 +7,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import SearchProductsInput from 'src/components/search-products-input/index.vue'
 import SearchProducts from 'src/components/search-products/index.vue'
 import LogoComponent from 'src/components/logo/index.vue'
-import type { HomePageData } from 'src/types/home'
 
 export default defineComponent({
 	name: 'HomePage',
@@ -21,16 +20,7 @@ export default defineComponent({
 		LogoComponent,
 	},
 	setup() {
-		const search = ref<HomePageData['search']>('')
-
-		const handleSearch = () => {
-			console.log(`Searching for: ${search.value}`)
-		}
-
-		return {
-			search,
-			handleSearch,
-		}
+		return {}
 	},
 })
 </script>
