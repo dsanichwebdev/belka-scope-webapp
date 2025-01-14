@@ -1,16 +1,20 @@
 <template lang="pug">
-q-header(elevated).bg-header.flex.q-pa-sm
-	LogoComponent(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded)
+q-header(elevated).bg-header.flex.q-py-sm.q-pl-sm.q-pr-md.row
+	LogoComponent.q-mr-md(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded)
+	.col.flex.items-center
+		SearchProductsInput(:needCheckAuth="false")
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import LogoComponent from 'src/components/logo/index.vue'
+import SearchProductsInput from 'src/components/search-products-input/index.vue'
 
 export default defineComponent({
 	name: 'HeaderComponent',
 	components: {
 		LogoComponent,
+		SearchProductsInput,
 	},
 	props: {},
 	setup() {},

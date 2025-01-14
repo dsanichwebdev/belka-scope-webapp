@@ -1,6 +1,6 @@
 <template lang="pug">
-.search-products-input.full-width.flex.justify-center
-  q-input.q-mt-xl.rounded-border.full-width(bg-color="primary" color="black" standout dense v-model="search" ref="searchInput" :style="'max-width: 360px;'" @update:model-value="checkAuth")
+.search-products-input.flex.items-center.full-width
+  q-input.q-mt-xl.rounded-border.full-width(bg-color="primary" color="black" standout dense v-model="search" ref="searchInput" @update:model-value="checkAuth")
     template(v-slot:append)
       q-btn(flat color="black" dense icon="search" @click="handleSearch")
       q-btn.q-ml-sm(v-if="showUploadPhotoButton" flat color="black" dense icon="center_focus_weak" @click="uploadPhoto")
@@ -40,7 +40,7 @@ export default defineComponent({
 		const showAuthDialog = ref<boolean>(false)
 
 		const checkAuth = (): void => {
-			if (!authUtil.checkAuth()) {
+			if (props.needCheckAuth && !authUtil.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
@@ -83,4 +83,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.search-products-input
+	& label
+		margin-top: 0 !important;
+</style>

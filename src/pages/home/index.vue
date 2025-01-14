@@ -2,7 +2,7 @@
 .home-page.full-width.window-height.flex.justify-center.items-center
   .flex.column.items-center.full-width
     LogoComponent(:rounded="true" :size="'2xl'" :fontSize="'32px'" :fontWeight="'500'")
-    SearchProductsInput(v-if="$q.screen.gt.sm")
+    SearchProductsInput.q-mt-xl(v-if="$q.screen.gt.sm" :style="'max-width: 320px;'")
     SearchProducts.q-mt-md(v-if="!$q.screen.gt.sm")
 </template>
 
