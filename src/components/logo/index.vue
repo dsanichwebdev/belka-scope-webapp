@@ -1,11 +1,12 @@
 <template lang="pug">
-div(:class="['logo-component', directionClass]")
-  q-img.logo-image(:src="src" :width="computedWidth" :style="{ borderRadius: rounded ? '8px' : '0px' }")
-  div.text-theme(
-    :class="textSizeClass"
-    :style="[fontSizeStyle, fontWeightStyle]"
-  ) {{ text }}
-</template>
+	div(:class="['logo-component', directionClass]")
+		q-img.logo-image(:src="src" :width="computedWidth" :style="{ borderRadius: rounded ? '8px' : '0px' }")
+		template(v-if="Screen.gt.sm || (!hideTextOnMobile && !Screen.gt.md)")
+			.text-theme(
+				:class="textSizeClass"
+				:style="[fontSizeStyle, fontWeightStyle]"
+			) {{ text }}
+	</template>
 
 <script lang="ts">
 import { defineComponent, computed, type PropType } from 'vue'
@@ -42,6 +43,10 @@ export default defineComponent({
 		fontWeight: {
 			type: String,
 			required: false,
+		},
+		hideTextOnMobile: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -91,6 +96,7 @@ export default defineComponent({
 			textSizeClass,
 			fontSizeStyle,
 			fontWeightStyle,
+			Screen,
 		}
 	},
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 q-header(elevated).bg-header.flex.q-py-sm.q-pl-sm.q-pr-md.row
-	LogoComponent.q-mr-md(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded)
+	LogoComponent.q-mr-md(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded hideTextOnMobile)
 	.col.flex.items-center
 		SearchProductsInput(:needCheckAuth="false")
 	ProfileButton.q-ml-md
