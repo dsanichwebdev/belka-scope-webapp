@@ -9,13 +9,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { authUtil } from 'src/utils/auth.util'
 import AuthModal from '../auth-modal/index.vue'
 import type { AuthService } from 'src/types/auth'
 import type {
 	SearchProductsInputData,
 	SearchProductsInputMethods,
 } from 'src/types/search-products-input'
+import { useAuthStore } from 'src/stores/auth'
 
 export default defineComponent({
 	name: 'SearchProductsInput',
@@ -36,24 +36,26 @@ export default defineComponent({
 	},
 
 	setup(props): SearchProductsInputData & SearchProductsInputMethods {
+		const store = useAuthStore()
+
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const checkAuth = (): void => {
-			if (props.needCheckAuth && !authUtil.checkAuth()) {
+			if (props.needCheckAuth && !store.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
 
 		const logIn = (service: AuthService): void => {
-			authUtil.logIn(service)
-			if (props.needCheckAuth && authUtil.hasProfileData) {
+			store.logIn(service)
+			if (props.needCheckAuth && store.hasProfileData) {
 				showAuthDialog.value = false
 			}
 		}
 
 		const logOut = (): void => {
-			authUtil.logOut()
+			store.logOut()
 		}
 
 		const handleHide = (): void => {

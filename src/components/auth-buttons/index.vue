@@ -9,7 +9,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import { type AuthService } from 'src/types/auth'
-import { authUtil } from 'src/utils/auth.util'
+import { useAuthStore } from '../../stores/auth'
 
 export default defineComponent({
 	name: 'AuthButtons',
@@ -24,11 +24,13 @@ export default defineComponent({
 		},
 	},
 	setup(props) {
+		const authStore = useAuthStore()
+
 		const emitHandleLogin = (service: AuthService) => {
 			props.handleLogin(service)
 		}
 
-		const services = authUtil?.services
+		const services = authStore?.services
 
 		return { emitHandleLogin, services }
 	},

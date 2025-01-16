@@ -8,11 +8,11 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { authUtil } from 'src/utils/auth.util'
 import AuthModal from 'src/components/auth-modal/index.vue'
 import PhotoInput from 'src/components/photo-input/index.vue'
 import type { SearchProductsData, SearchProductsMethods } from 'src/types/search-products'
 import type { AuthService } from 'src/types/auth'
+import { useAuthStore } from 'src/stores/auth'
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -23,24 +23,26 @@ export default defineComponent({
 	},
 
 	setup(): SearchProductsData & SearchProductsMethods {
+		const authStore = useAuthStore()
+
 		const searchMessage = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const handleSearch = (): void => {
-			if (!authUtil.checkAuth()) {
+			if (!authStore.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
 
 		const checkAuth = (): void => {
-			if (!authUtil.checkAuth()) {
+			if (!authStore.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
 
 		const logIn = (service: AuthService): void => {
-			authUtil.logIn(service)
-			if (authUtil.hasProfileData) {
+			authStore.logIn(service)
+			if (authStore.hasProfileData) {
 				showAuthDialog.value = false
 			}
 		}
