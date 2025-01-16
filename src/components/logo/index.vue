@@ -1,16 +1,17 @@
 <template lang="pug">
-	div(:class="['logo-component', directionClass]")
-		q-img.logo-image(:src="src" :width="computedWidth" :style="{ borderRadius: rounded ? '8px' : '0px' }")
-		template(v-if="Screen.gt.sm || (!hideTextOnMobile && !Screen.gt.md)")
-			.text-theme(
-				:class="textSizeClass"
-				:style="[fontSizeStyle, fontWeightStyle]"
-			) {{ text }}
+.cursor-pointer(:class="['logo-component', directionClass]" @click="transitionToHome")
+	q-img.logo-image(:src="src" :width="computedWidth" :style="{ borderRadius: rounded ? '8px' : '0px' }")
+	template(v-if="Screen.gt.sm || (!hideTextOnMobile && !Screen.gt.md)")
+		.text-theme(
+			:class="textSizeClass"
+			:style="[fontSizeStyle, fontWeightStyle]"
+		) {{ text }}
 	</template>
 
 <script lang="ts">
 import { defineComponent, computed, type PropType } from 'vue'
 import { QImg, Screen } from 'quasar'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
 	name: 'LogoComponent',
@@ -51,6 +52,8 @@ export default defineComponent({
 	},
 
 	setup(props) {
+		const router = useRouter()
+
 		const directionClass = computed(() => (props.direction === 'row' ? 'flex-row' : 'flex-column'))
 
 		const computedWidth = computed(() => {
@@ -90,12 +93,17 @@ export default defineComponent({
 			return props.fontWeight ? { fontWeight: props.fontWeight } : {}
 		})
 
+		const transitionToHome = (): void => {
+			router.push('/')
+		}
+
 		return {
 			directionClass,
 			computedWidth,
 			textSizeClass,
 			fontSizeStyle,
 			fontWeightStyle,
+			transitionToHome,
 			Screen,
 		}
 	},
