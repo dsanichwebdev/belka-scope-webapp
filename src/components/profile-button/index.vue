@@ -1,5 +1,5 @@
 <template lang="pug">
-.profile-button.cursor-pointer
+.profile-button.cursor-pointer.flex.items-center
 	q-avatar.bg-primary(
 		round
 		@mouseenter="showMenu = true"
@@ -58,7 +58,6 @@ export default defineComponent({
 <style scoped lang="stylus">
 .profile-button
   position: relative
-  display: inline-block
   q-avatar
     cursor: pointer
   q-popup-proxy
