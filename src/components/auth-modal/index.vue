@@ -7,63 +7,68 @@
       template(v-else-if="!authUtil?.isAuthenticated")
         q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
           .text-h6.text-weight-regular Войти с помощью
-        AuthButtons(@handleLogin="handleLogin")
+        AuthButtons(:handleLogin="handleLogin")
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { defineComponent, ref, watch, type PropType } from 'vue'
 import AuthButtons from '../auth-buttons/index.vue'
 import SettingsUserData from 'src/components/settings/user-data/index.vue'
-import { authUtil } from '../../utils/auth.util'
+import { authUtil } from 'src/utils/auth.util'
+import type { AuthModalProps } from 'src/types/auth-modal'
 
 export default defineComponent({
-  name: 'AuthModal',
+	name: 'AuthModal',
 
-  components: {
-    AuthButtons,
-    SettingsUserData,
-  },
+	components: {
+		AuthButtons,
+		SettingsUserData,
+	},
 
-  props: {
-    isVisible: {
-      type: Boolean,
-      required: true,
-    },
-    login: {
-      type: Function as PropType<(service: string) => void>,
-      required: true,
-    },
-    close: {
-      type: Function as PropType<() => void>,
-      required: true,
-    },
-  },
+	props: {
+		isVisible: {
+			type: Boolean,
+			required: true,
+		},
+		login: {
+			type: Function as PropType<(service: string) => void>,
+			required: true,
+		},
+		close: {
+			type: Function as PropType<() => void>,
+			required: true,
+		},
+	},
 
-  data() {
-    return {
-      isDialogVisible: this.isVisible,
-      showProfileDataStep: false,
-    }
-  },
+	setup(props: AuthModalProps) {
+		const isDialogVisible = ref<boolean>(props.isVisible)
+		const showProfileDataStep = ref<boolean>(false)
 
-  watch: {
-    isVisible(newValue) {
-      this.isDialogVisible = newValue
-    },
-  },
+		watch(
+			() => props.isVisible,
+			(newValue) => {
+				isDialogVisible.value = newValue
+			},
+		)
 
-  methods: {
-    handleLogin(service: string) {
-      this.login(service)
-      if (!authUtil.hasProfileData) {
-        this.showProfileDataStep = true
-      }
-    },
+		const handleLogin = (service: string) => {
+			props.login(service)
+			if (!authUtil.hasProfileData) {
+				showProfileDataStep.value = true
+			}
+		}
 
-    closeModal() {
-      this.close()
-    },
-  },
+		const closeModal = () => {
+			props.close()
+		}
+
+		return {
+			isDialogVisible,
+			showProfileDataStep,
+			handleLogin,
+			closeModal,
+		}
+	},
 })
 </script>
 

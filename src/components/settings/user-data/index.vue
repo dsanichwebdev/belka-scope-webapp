@@ -40,32 +40,40 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from 'vue'
 import { mask } from 'vue-the-mask'
-import { type PropType } from 'vue'
+import type { SettingsUserDataData, SettingsUserDataMethods } from 'src/types/settings-user-data'
+import type { Directive } from 'vue'
 
-export default {
-  name: 'SettingsUserData',
-  directives: {
-    mask,
-  },
-  props: {
-    close: {
-      type: Function as PropType<() => void>,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      name: '',
-      phoneNumber: '',
-    }
-  },
-  methods: {
-    saveData(name: string, phoneNumber: string): void {
-      console.log(`Данные сохранены: ${name} - ${phoneNumber}`)
-    },
-  },
-}
+export default defineComponent({
+	name: 'SettingsUserData',
+
+	directives: {
+		mask: mask as Directive,
+	},
+
+	props: {
+		close: {
+			type: Function,
+			required: true,
+		},
+	},
+
+	setup(): SettingsUserDataData & SettingsUserDataMethods {
+		const name = ref<string>('')
+		const phoneNumber = ref<string>('')
+
+		const saveData = (name: string, phoneNumber: string): void => {
+			console.log(`Данные сохранены: ${name} - ${phoneNumber}`)
+		}
+
+		return {
+			name,
+			phoneNumber,
+			saveData,
+		}
+	},
+})
 </script>
 
 <style scoped></style>

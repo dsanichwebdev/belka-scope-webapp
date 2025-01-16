@@ -5,7 +5,7 @@
     .text-h4.q-mt-sm BelkaScope
     q-card.q-mt-lg.flex.justify-center.column.items-center.q-pa-md(flat)
       .text-h5.text-weight-regular.q-mb-sm Войти с помощью
-      AuthButtons(expanded @handleLogin="logIn")
+      AuthButtons(expanded :handleLogin="logIn")
 </template>
 
 <script lang="ts">

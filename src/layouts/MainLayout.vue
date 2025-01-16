@@ -1,22 +1,32 @@
 <template lang="pug">
-  q-layout.flex.items-center.column(view="lHh Lpr lFf")
-    q-page-container.q-pa-lg.full-width(:style="'max-width: 1080px;'")
-      router-view
-      div Prod version
+q-layout.flex.items-center.column(view="lHh Lpr lFf")
+	HeaderComponent(v-if="displayHeader")
+	q-page-container.q-pa-lg.full-width(:style="'max-width: 1080px;'")
+		router-view
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import HeaderComponent from 'src/components/header/index.vue'
+import { useRoute } from 'vue-router'
+import { HIDDEN_HEADER_ROUTES } from '../const'
 
 export default defineComponent({
-  name: 'MainLayout',
+	name: 'MainLayout',
 
-  components: {},
+	props: {} as Record<string, never>,
 
-  data() {
-    return {}
-  },
+	setup() {
+		const route = useRoute()
+		const displayHeader = computed(() => {
+			return !HIDDEN_HEADER_ROUTES.includes(route.name as string)
+		})
 
-  methods: {},
+		return { displayHeader }
+	},
+
+	components: {
+		HeaderComponent,
+	},
 })
 </script>

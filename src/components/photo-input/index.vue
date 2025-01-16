@@ -13,85 +13,92 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import type { PhotoInputData, PhotoInputMethods } from 'src/types/photo-input'
 
 export default defineComponent({
-  name: 'PhotoCaptureButton',
+	name: 'PhotoInput',
 
-  data() {
-    return {
-      photoUrl: '',
-      showFileDialog: false,
-    }
-  },
+	setup(): PhotoInputData & PhotoInputMethods {
+		const photoUrl = ref<string>('')
+		const showFileDialog = ref<boolean>(false)
 
-  methods: {
-    async openPhotoOptions(): Promise<void> {
-      try {
-        await this.openCamera()
-      } catch (error) {
-        console.error('Camera not available. Falling back to file picker.', error)
-        this.openFilePicker()
-      }
-    },
+		const openPhotoOptions = async (): Promise<void> => {
+			try {
+				await openCamera()
+			} catch (error) {
+				console.error('Camera not available. Falling back to file picker.', error)
+				openFilePicker()
+			}
+		}
 
-    async openCamera(): Promise<void> {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        const videoElement = document.createElement('video')
-        videoElement.srcObject = stream
-        videoElement.play()
+		const openCamera = async (): Promise<void> => {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+				const videoElement = document.createElement('video')
+				videoElement.srcObject = stream
+				videoElement.play()
 
-        const canvas = document.createElement('canvas')
-        const context = canvas.getContext('2d')
+				const canvas = document.createElement('canvas')
+				const context = canvas.getContext('2d')
 
-        videoElement.addEventListener('loadeddata', () => {
-          context?.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
-          this.photoUrl = canvas.toDataURL('image/png')
-          stream.getTracks().forEach((track) => track.stop())
-        })
-      } catch (error) {
-        console.error('Error accessing camera:', error)
-        throw error
-      }
-    },
+				videoElement.addEventListener('loadeddata', () => {
+					context?.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
+					photoUrl.value = canvas.toDataURL('image/png')
+					stream.getTracks().forEach((track) => track.stop())
+				})
+			} catch (error) {
+				console.error('Error accessing camera:', error)
+				throw error
+			}
+		}
 
-    openFilePicker(): void {
-      this.showFileDialog = true
-    },
+		const openFilePicker = (): void => {
+			showFileDialog.value = true
+		}
 
-    handleFileUpload(): void {
-      const input = this.$refs.fileInput as HTMLInputElement
-      const file = input?.files?.[0]
-      if (file) {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          this.photoUrl = e.target?.result as string
-        }
-        reader.readAsDataURL(file)
-      }
-      this.showFileDialog = false
-    },
+		const handleFileUpload = (): void => {
+			const input = document.querySelector('input[type="file"]') as HTMLInputElement
+			const file = input?.files?.[0]
+			if (file) {
+				const reader = new FileReader()
+				reader.onload = (e) => {
+					photoUrl.value = e.target?.result as string
+				}
+				reader.readAsDataURL(file)
+			}
+			showFileDialog.value = false
+		}
 
-    handleDeletePhoto(): void {
-      this.photoUrl = ''
-    },
-  },
+		const handleDeletePhoto = (): void => {
+			photoUrl.value = ''
+		}
+
+		return {
+			photoUrl,
+			showFileDialog,
+			openPhotoOptions,
+			openCamera,
+			openFilePicker,
+			handleFileUpload,
+			handleDeletePhoto,
+		}
+	},
 })
 </script>
 
 <style scoped>
 .photo-capture-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 q-img {
-  margin-top: 16px;
-  max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	margin-top: 16px;
+	max-width: 100%;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 </style>
