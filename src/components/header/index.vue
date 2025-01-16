@@ -1,9 +1,9 @@
 <template lang="pug">
 q-header(elevated).bg-header.flex.q-py-sm.q-pl-sm.q-pr-md.row
-	LogoComponent.q-mr-md(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded hideTextOnMobile)
+	LogoComponent.q-mr-md.hover-scaling(:size="'sm'" :direction="'row'" :fontSize="'20px'" :fontWeight="'500'" rounded hideTextOnMobile)
 	.col.flex.items-center
 		SearchProductsInput(:needCheckAuth="false")
-	ProfileButton.q-ml-md
+	ProfileButton.q-ml-md.hover-scaling
 </template>
 
 <script lang="ts">
@@ -24,4 +24,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.hover-scaling
+	transition: .2s;
+.hover-scaling:hover
+	transform: scale(1.03);
+	transition: .2s;
+</style>
