@@ -8,7 +8,7 @@
 			AuthButtons(expanded :handleLogin="logIn")
 q-dialog(v-model="showProfileDataStep")
 	q-card.q-pa-md
-		SettingsUserData
+		SettingsUserData(:closeModal="handleCloseSettingsUserDataModal")
 </template>
 
 <script lang="ts">
@@ -39,10 +39,15 @@ export default defineComponent({
 			authStore.logOut()
 		}
 
+		const handleCloseSettingsUserDataModal = () => {
+			showProfileDataStep.value = false
+		}
+
 		return {
 			logIn,
 			logOut,
 			showProfileDataStep,
+			handleCloseSettingsUserDataModal,
 		}
 	},
 })

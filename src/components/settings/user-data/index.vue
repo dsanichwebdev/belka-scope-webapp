@@ -57,13 +57,13 @@ export default defineComponent({
 	},
 
 	props: {
-		close: {
+		closeModal: {
 			type: Function,
 			required: true,
 		},
 	},
 
-	setup(): SettingsUserDataReturn {
+	setup(props): SettingsUserDataReturn {
 		const profileSettingsStore = useProfileSettingsStore()
 
 		const form = reactive<SettingsUserData>({
@@ -78,6 +78,7 @@ export default defineComponent({
 		const handleSave = (): void => {
 			profileSettingsStore.saveData({ name: form.name, phoneNumber: form.phoneNumber })
 			console.log(`Данные сохранены: ${form.name} - ${form.phoneNumber}`)
+			props.closeModal()
 		}
 
 		return {
