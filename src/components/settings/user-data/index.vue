@@ -13,7 +13,7 @@
           color="black"
           standout
           dense
-          v-model:modelValue="name" 
+          v-model:modelValue="name"
           :style="'max-width: 480px;'"
         )
     .col
@@ -36,6 +36,7 @@
         color="primary"
         :disabled="!name || !phoneNumber"
         @click="saveData(name, phoneNumber)"
+				no-caps
       )
 </template>
 
