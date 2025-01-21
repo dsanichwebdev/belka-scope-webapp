@@ -11,8 +11,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AuthButtons from 'src/components/auth-buttons/index.vue'
-import { authUtil } from 'src/utils/auth.util'
 import type { AuthService } from 'src/types/auth'
+import { useAuthStore } from 'src/stores/auth'
 
 export default defineComponent({
 	name: 'AuthPage',
@@ -20,12 +20,14 @@ export default defineComponent({
 		AuthButtons,
 	},
 	setup() {
+		const authStore = useAuthStore()
+
 		const logIn = (service: AuthService): void => {
-			authUtil.logIn(service)
+			authStore.logIn(service)
 		}
 
 		const logOut = (): void => {
-			authUtil.logOut()
+			authStore.logOut()
 		}
 
 		const checkAuth = (): void => {}

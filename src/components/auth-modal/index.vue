@@ -4,7 +4,7 @@
     q-card.q-pa-md(flat)
       template(v-if="showProfileDataStep")
         SettingsUserData(@closeModal="closeModal")
-      template(v-else-if="!authUtil?.isAuthenticated")
+      template(v-else-if="!authStore.isAuthenticated")
         q-card-section.flex.justify-center.q-px-md.q-pt-none.q-pb-md
           .text-h6.text-weight-regular Войти с помощью
         AuthButtons(:handleLogin="handleLogin")
@@ -14,8 +14,8 @@
 import { defineComponent, ref, watch, type PropType } from 'vue'
 import AuthButtons from '../auth-buttons/index.vue'
 import SettingsUserData from 'src/components/settings/user-data/index.vue'
-import { authUtil } from 'src/utils/auth.util'
 import type { AuthModalProps } from 'src/types/auth-modal'
+import { useAuthStore } from 'src/stores/auth'
 
 export default defineComponent({
 	name: 'AuthModal',
@@ -41,6 +41,8 @@ export default defineComponent({
 	},
 
 	setup(props: AuthModalProps) {
+		const authStore = useAuthStore()
+
 		const isDialogVisible = ref<boolean>(props.isVisible)
 		const showProfileDataStep = ref<boolean>(false)
 
@@ -53,7 +55,7 @@ export default defineComponent({
 
 		const handleLogin = (service: string) => {
 			props.login(service)
-			if (!authUtil.hasProfileData) {
+			if (!authStore.hasProfileData) {
 				showProfileDataStep.value = true
 			}
 		}
@@ -67,6 +69,7 @@ export default defineComponent({
 			showProfileDataStep,
 			handleLogin,
 			closeModal,
+			authStore,
 		}
 	},
 })
