@@ -20,14 +20,14 @@ export default defineComponent({
 		AuthButtons,
 	},
 	setup() {
-		const store = useAuthStore()
+		const authStore = useAuthStore()
 
 		const logIn = (service: AuthService): void => {
-			store.logIn(service)
+			authStore.logIn(service)
 		}
 
 		const logOut = (): void => {
-			store.logOut()
+			authStore.logOut()
 		}
 
 		const checkAuth = (): void => {}

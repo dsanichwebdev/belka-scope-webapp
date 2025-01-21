@@ -36,26 +36,26 @@ export default defineComponent({
 	},
 
 	setup(props): SearchProductsInputData & SearchProductsInputMethods {
-		const store = useAuthStore()
+		const authStore = useAuthStore()
 
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const checkAuth = (): void => {
-			if (props.needCheckAuth && !store.checkAuth()) {
+			if (props.needCheckAuth && !authStore.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
 
 		const logIn = (service: AuthService): void => {
-			store.logIn(service)
-			if (props.needCheckAuth && store.hasProfileData) {
+			authStore.logIn(service)
+			if (props.needCheckAuth && authStore.hasProfileData) {
 				showAuthDialog.value = false
 			}
 		}
 
 		const logOut = (): void => {
-			store.logOut()
+			authStore.logOut()
 		}
 
 		const handleHide = (): void => {
