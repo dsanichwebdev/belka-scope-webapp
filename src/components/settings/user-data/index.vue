@@ -69,6 +69,7 @@ export default defineComponent({
 		const form = reactive<SettingsUserData>({
 			name: '',
 			phoneNumber: '',
+			subscription: profileSettingsStore.getCurrentSubscription,
 		})
 
 		const isFormValid = computed<boolean>(() => {
@@ -76,7 +77,11 @@ export default defineComponent({
 		})
 
 		const handleSave = (): void => {
-			profileSettingsStore.saveData({ name: form.name, phoneNumber: form.phoneNumber })
+			profileSettingsStore.saveData({
+				name: form.name,
+				phoneNumber: form.phoneNumber,
+				subscription: profileSettingsStore.getCurrentSubscription,
+			})
 			console.log(`Данные сохранены: ${form.name} - ${form.phoneNumber}`)
 			props.closeModal()
 		}

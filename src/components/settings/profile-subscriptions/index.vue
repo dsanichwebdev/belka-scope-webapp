@@ -2,16 +2,16 @@
 .profile-subscriptions
   q-card.q-pa-md
     .row.justify-between.items-center
-      .text-positive.text-bold Активна
+      .text-positive.text-bold {{subscriptionStatus()}}
       q-btn(
         no-caps
         @click="openModal"
       ) Управлять подпиской
     q-separator.q-my-md
-    .text-h5.text-bold Базовый
-    .text-grey-8.q-mt-md 499₽ спишется 1 октября 2025 года
+    .text-h5.text-bold {{subscriptions.find((subscription) => subscription.type === profileSettingsStore.getCurrentSubscription.type).label}}
+    .text-grey-8.q-mt-md {{subscriptions.find((subscription) => subscription.type === profileSettingsStore.getCurrentSubscription.type).price}}₽ спишется {{formatDate(profileSettingsStore.getCurrentSubscription.endDate)}}
 
-q-dialog(v-model="isDialogOpen")
+q-dialog(v-model="isDialogOpen" @hide="closeModal")
   q-card.q-pa-md.full-width
     .row.items-center.q-pb-none.q-mb-md
       .text-h6 Управление подпиской
@@ -21,16 +21,16 @@ q-dialog(v-model="isDialogOpen")
     div(v-if="step === 1")
       .row.q-mb-sm
         .col.text-bold Статус:
-        .col Активна
+        .col {{subscriptionStatus()}}
       .row.q-mb-sm
         .col.text-bold Тип:
-        .col Базовый
+        .col {{subscriptions.find((subscription) => subscription.type === profileSettingsStore.getCurrentSubscription.type).label}}
       .row.q-mb-sm
         .col.text-bold Дата активации:
-        .col 1 января 2025 года
+        .col {{formatDate(profileSettingsStore.getCurrentSubscription.startDate)}}
       .row
         .col.text-bold Сумма платежа:
-        .col 499₽ в месяц
+        .col {{subscriptions.find((subscription) => subscription.type === profileSettingsStore.getCurrentSubscription.type).price}}₽ в месяц
       q-separator.q-my-md
       q-btn(no-caps @click="goToStep(2)") Сменить тариф
 
@@ -46,16 +46,18 @@ q-dialog(v-model="isDialogOpen")
         .col(v-for="(subscription, index) in subscriptions")
           q-card.subscription-card.flat.q-pa-sm.full-width(
             :key="index"
-            :class="{ 'selected-subscription': currentSubscription === subscription.name }"
-            @click="chooseSubscription(subscription.name)"
+            :class="{ 'selected-subscription': currentSubscription.type === subscription.type }"
+            @click="chooseSubscription(subscription.type)"
           )
             .text-h6 {{ subscription.label }}
             .text-grey-7 {{ subscription.price }}₽
       q-separator.q-my-md
-      q-btn(no-caps @click="save()") Выбрать тариф
+      q-btn(no-caps @click="save(currentSubscription.type)" :disabled="currentSubscription.type === profileSettingsStore.getCurrentSubscription.type") Выбрать тариф
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onBeforeUnmount } from 'vue'
+import { useProfileSettingsStore } from '../../../stores/profile-settings'
+import { formatDate } from '../../../utils/formatDate'
 import type {
 	SettingsProfileSubscriptions,
 	SettingsProfileSubscriptionsMethods,
@@ -65,32 +67,39 @@ import type {
 export default defineComponent({
 	name: 'ProfileSubscriptions',
 	setup(): SettingsProfileSubscriptions & SettingsProfileSubscriptionsMethods {
+		const profileSettingsStore = useProfileSettingsStore()
+
 		const isDialogOpen = ref(false)
+
 		const step = ref(1)
-		const currentSubscription = ref('base')
+
+		const currentSubscription = ref({ ...profileSettingsStore.getCurrentSubscription })
+
 		const subscriptions = ref([
 			{
 				label: 'Бесплатная',
-				name: 'free',
+				type: 'free',
 				price: 0,
 			},
 			{
 				label: 'Базовая',
-				name: 'base',
+				type: 'base',
 				price: 499,
 			},
 			{
 				label: 'Продвинутая',
-				name: 'advanced',
+				type: 'advanced',
 				price: 1999,
 			},
 		])
 
-		const openModal = () => {
-			isDialogOpen.value = true
+		const resetSubscriptionToDefault = () => {
+			currentSubscription.value = { ...profileSettingsStore.getCurrentSubscription }
 		}
 
 		const closeModal = () => {
+			resetSubscriptionToDefault()
+			step.value = 1
 			isDialogOpen.value = false
 		}
 
@@ -98,12 +107,29 @@ export default defineComponent({
 			step.value = newStep
 		}
 
-		const chooseSubscription = (name: Subscription['name']) => {
-			currentSubscription.value = name
+		const chooseSubscription = (type: Subscription['type']) => {
+			currentSubscription.value.type = type
+			console.log(currentSubscription.value)
 		}
 
-		const save = () => {
-			console.log(`Выбран тариф ${currentSubscription.value}`)
+		const save = (type: string) => {
+			profileSettingsStore.saveSubscription(type)
+			console.log(`Выбран тариф ${type}`)
+		}
+
+		onBeforeUnmount(() => {
+			if (!isDialogOpen.value) {
+				resetSubscriptionToDefault()
+				step.value = 1
+			}
+		})
+
+		const openModal = () => {
+			isDialogOpen.value = true
+		}
+
+		const subscriptionStatus = (): string => {
+			return currentSubscription.value.isActive ? 'Активна' : 'Неактивна'
 		}
 
 		return {
@@ -116,6 +142,9 @@ export default defineComponent({
 			currentSubscription,
 			chooseSubscription,
 			save,
+			subscriptionStatus,
+			profileSettingsStore,
+			formatDate,
 		}
 	},
 })
