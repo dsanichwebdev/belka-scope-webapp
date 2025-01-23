@@ -6,27 +6,29 @@
   .row.q-gutter-md
     .col
       .q-mb-md
-        label.text-subtitle2 Имя
+        label.text-subtitle2(for="name") Имя
         q-input(
+          id="name"
+          v-model="form.name"
           rounded-border
           full-width
           color="black"
           standout
           dense
-          v-model:modelValue="name" 
           :style="'max-width: 480px;'"
         )
     .col
       .q-mb-md
-        label.text-subtitle2 Телефон
+        label.text-subtitle2(for="phoneNumber") Телефон
         q-input(
+          id="phoneNumber"
+          v-model="form.phoneNumber"
           rounded-border
           full-width
           color="black"
           standout
           dense
-          v-model:modelValue="phoneNumber"
-          v-mask="'(+7) ###-###-##-##'"
+          v-mask="'(\\+7) ###-###-##-##'"
           :style="'max-width: 480px;'"
         )
   .row.q-gutter-md
@@ -34,16 +36,18 @@
       q-btn(
         label="Сохранить"
         color="primary"
-        :disabled="!name || !phoneNumber"
-        @click="saveData(name, phoneNumber)"
+        :disabled="!isFormValid"
+        @click="handleSave"
+        no-caps
       )
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, computed } from 'vue'
 import { mask } from 'vue-the-mask'
-import type { SettingsUserDataData, SettingsUserDataMethods } from 'src/types/settings-user-data'
 import type { Directive } from 'vue'
+import { useProfileSettingsStore } from '../../../stores/profile-settings'
+import type { SettingsUserDataReturn, SettingsUserData } from '../../../types/settings-user-data'
 
 export default defineComponent({
 	name: 'SettingsUserData',
@@ -53,24 +57,39 @@ export default defineComponent({
 	},
 
 	props: {
-		close: {
+		closeModal: {
 			type: Function,
 			required: true,
 		},
 	},
 
-	setup(): SettingsUserDataData & SettingsUserDataMethods {
-		const name = ref<string>('')
-		const phoneNumber = ref<string>('')
+	setup(props): SettingsUserDataReturn {
+		const profileSettingsStore = useProfileSettingsStore()
 
-		const saveData = (name: string, phoneNumber: string): void => {
-			console.log(`Данные сохранены: ${name} - ${phoneNumber}`)
+		const form = reactive<SettingsUserData>({
+			name: '',
+			phoneNumber: '',
+			subscription: profileSettingsStore.getCurrentSubscription,
+		})
+
+		const isFormValid = computed<boolean>(() => {
+			return form.name.trim() !== '' && form.phoneNumber.trim() !== ''
+		})
+
+		const handleSave = (): void => {
+			profileSettingsStore.saveData({
+				name: form.name,
+				phoneNumber: form.phoneNumber,
+				subscription: profileSettingsStore.getCurrentSubscription,
+			})
+			console.log(`Данные сохранены: ${form.name} - ${form.phoneNumber}`)
+			props.closeModal()
 		}
 
 		return {
-			name,
-			phoneNumber,
-			saveData,
+			form,
+			isFormValid,
+			handleSave,
 		}
 	},
 })
