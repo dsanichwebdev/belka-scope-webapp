@@ -114,6 +114,7 @@ import { formatDate } from 'src/utils/formatDate'
 import { defineComponent, ref, onBeforeUnmount } from 'vue'
 import { useProfileSettingsStore } from '../../../stores/profile-settings'
 import type { SettingsPaymentMethod, SettingsPaymentMethodMethods } from '../../../types/settings-payment-method';
+import { paymentsList } from 'src/mock/payments-list.mock'
 
 export default defineComponent({
 	name: 'PaymentMethod',
@@ -173,49 +174,7 @@ export default defineComponent({
 			console.log(`Выбран способ оплаты ${{...card}}`)
 		}
 
-		// TODO: moved to mock data
-		const payments = [
-			{
-				value: 159,
-				card: {
-					number: '4276 0000 0000 1001',
-					expiration: '2025-01-01 00:00:00',
-				},
-				date: '2025-01-01 00:00:00',
-			},
-			{
-				value: 159,
-				card: {
-					number: '4276 0000 0000 1001',
-					expiration: '2025-01-01 00:00:00',
-				},
-				date: '2025-01-01 00:00:00',
-			},
-			{
-				value: 159,
-				card: {
-					number: '4276 0000 0000 1001',
-					expiration: '2025-01-01 00:00:00',
-				},
-				date: '2025-01-01 00:00:00',
-			},
-			{
-				value: 159,
-				card: {
-					number: '4276 0000 0000 1001',
-					expiration: '2025-01-01 00:00:00',
-				},
-				date: '2025-01-01 00:00:00',
-			},
-			{
-				value: 159,
-				card: {
-					number: '4276 0000 0000 1001',
-					expiration: '2025-01-01 00:00:00',
-				},
-				date: '2025-01-01 00:00:00',
-			},
-		]
+		const payments = paymentsList
 
 		return {
 			isDialogOpen,
