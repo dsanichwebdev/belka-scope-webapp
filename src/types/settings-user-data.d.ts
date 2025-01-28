@@ -6,6 +6,14 @@ export interface SettingsUserData {
 		type: string
 		startDate: string
 		endDate: string
+	},
+	paymentMethod: {
+		card: {
+			number: string
+			cvv: string
+			expiration: string
+			holder: string
+		}
 	}
 }
 
@@ -14,6 +22,7 @@ export interface SettingsUserDataMethods {
 		name: string,
 		phoneNumber: string,
 		subscription: SettingsUserData['subscription'],
+		paymentMethod: SettingsUserData['paymentMethod']
 	) => void
 }
 

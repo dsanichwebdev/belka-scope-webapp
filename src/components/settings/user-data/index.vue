@@ -70,6 +70,7 @@ export default defineComponent({
 			name: '',
 			phoneNumber: '',
 			subscription: profileSettingsStore.getCurrentSubscription,
+			paymentMethod: profileSettingsStore.getPaymentMethod
 		})
 
 		const isFormValid = computed<boolean>(() => {
@@ -81,6 +82,7 @@ export default defineComponent({
 				name: form.name,
 				phoneNumber: form.phoneNumber,
 				subscription: profileSettingsStore.getCurrentSubscription,
+				paymentMethod: profileSettingsStore.getPaymentMethod
 			})
 			console.log(`Данные сохранены: ${form.name} - ${form.phoneNumber}`)
 			props.closeModal()

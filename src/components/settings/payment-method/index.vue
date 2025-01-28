@@ -9,7 +9,7 @@
       ) Управлять оплатой
     .row.flex.items-center
       q-icon(name="credit_card" size="md")
-      .text-h6.q-ml-md •••• 8043
+      .text-h6.q-ml-md •••• {{currentPaymentMethod.card.number.substring(14)}}
 
 q-dialog(v-model="isDialogOpen" @hide="closeModal")
   q-card.q-pa-md.full-width
@@ -25,9 +25,9 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
         div.row
           q-icon(name="credit_card" size="md")
           .text.q-ml-md.col
-            .row •••• 8043
-            .row 01/30
-        q-btn(no-caps) Отвязать
+            .row •••• {{currentPaymentMethod.card.number.substring(14)}}
+            .row {{currentPaymentMethod.card.expiration}}
+        q-btn(no-caps @click="unlinkPaymentMethod()") Отвязать
       q-separator.q-my-md
       .row.q-mb-sm.flex.column
         .text-bold.q-mb-sm История операций
@@ -57,7 +57,7 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
         .text-bold.q-mb-md Введите данные карты
         q-form.q-gutter-md.q-mt-md
           q-input(
-            v-model="form.cardNumber"
+            v-model="currentPaymentMethod.card.number"
             label="Номер карты"
             mask="#### #### #### ####"
             hint="16 цифр"
@@ -70,7 +70,7 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
               q-icon(name="credit_card")
 
           q-input(
-            v-model="form.cvv"
+            v-model="currentPaymentMethod.card.cvv"
             label="CVV код"
             mask="###"
             hint="3 цифры с обратной стороны карты"
@@ -84,7 +84,7 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
               q-icon(name="lock")
 
           q-input(
-            v-model="form.expirationDate"
+            v-model="currentPaymentMethod.card.expiration"
             label="Срок действия (MM/YY)"
             mask="##/##"
             hint="Введите месяц и год"
@@ -97,7 +97,7 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
               q-icon(name="event")
 
           q-input(
-            v-model="form.cardHolder"
+            v-model="currentPaymentMethod.card.holder"
             label="Имя держателя карты"
             hint="Как на карте (латиницей)"
             required
@@ -107,30 +107,35 @@ q-dialog(v-model="isDialogOpen" @hide="closeModal")
           )
             template(v-slot:prepend)
               q-icon(name="person")
-      q-btn.q-mt-md(no-caps) Привязать
+      q-btn.q-mt-md(no-caps @click="save()") Привязать
 </template>
 <script lang="ts">
 import { formatDate } from 'src/utils/formatDate'
 import { defineComponent, ref, onBeforeUnmount } from 'vue'
 import { useProfileSettingsStore } from '../../../stores/profile-settings'
+import type { SettingsPaymentMethod, SettingsPaymentMethodMethods } from '../../../types/settings-payment-method';
 
 export default defineComponent({
 	name: 'PaymentMethod',
-	setup() {
+	setup(): SettingsPaymentMethod & SettingsPaymentMethodMethods {
 		const profileSettingsStore = useProfileSettingsStore()
 
 		const isDialogOpen = ref(false)
 
 		const step = ref(1)
 
-		const form = ref({
-			cardNumber: '',
-			cvv: '',
-			expirationDate: '',
-			cardHolder: '',
-		})
+		const currentPaymentMethod = ref({ ...profileSettingsStore.getPaymentMethod })
+
+		const resetPaymentMethodToDefault = () => {
+			currentPaymentMethod.value = { ...profileSettingsStore.getPaymentMethod }
+		}
+
+		const openModal = () => {
+			isDialogOpen.value = true
+		}
 
 		const closeModal = () => {
+			resetPaymentMethodToDefault()
 			step.value = 1
 			isDialogOpen.value = false
 		}
@@ -141,20 +146,40 @@ export default defineComponent({
 
 		onBeforeUnmount(() => {
 			if (!isDialogOpen.value) {
+				resetPaymentMethodToDefault()
 				step.value = 1
 			}
 		})
 
-		const openModal = () => {
-			isDialogOpen.value = true
+		const unlinkPaymentMethod = () => {
+			const card = {
+				number: '',
+				expiration: '',
+				cvv: '',
+				holder: ''
+			}
+			profileSettingsStore.savePaymentData({card})
+			resetPaymentMethodToDefault()
 		}
-		// TODO: fix
+
+		const save = () => {
+			const card = {
+				number: currentPaymentMethod.value.card.number,
+				expiration: currentPaymentMethod.value.card.expiration,
+				cvv: currentPaymentMethod.value.card.cvv,
+				holder: currentPaymentMethod.value.card.holder
+			}
+			profileSettingsStore.savePaymentData({card})
+			console.log(`Выбран способ оплаты ${{...card}}`)
+		}
+
+		// TODO: moved to mock data
 		const payments = [
 			{
 				value: 159,
 				card: {
 					number: '4276 0000 0000 1001',
-					date: '2025-01-01 00:00:00',
+					expiration: '2025-01-01 00:00:00',
 				},
 				date: '2025-01-01 00:00:00',
 			},
@@ -162,7 +187,7 @@ export default defineComponent({
 				value: 159,
 				card: {
 					number: '4276 0000 0000 1001',
-					date: '2025-01-01 00:00:00',
+					expiration: '2025-01-01 00:00:00',
 				},
 				date: '2025-01-01 00:00:00',
 			},
@@ -170,7 +195,7 @@ export default defineComponent({
 				value: 159,
 				card: {
 					number: '4276 0000 0000 1001',
-					date: '2025-01-01 00:00:00',
+					expiration: '2025-01-01 00:00:00',
 				},
 				date: '2025-01-01 00:00:00',
 			},
@@ -178,7 +203,7 @@ export default defineComponent({
 				value: 159,
 				card: {
 					number: '4276 0000 0000 1001',
-					date: '2025-01-01 00:00:00',
+					expiration: '2025-01-01 00:00:00',
 				},
 				date: '2025-01-01 00:00:00',
 			},
@@ -186,7 +211,7 @@ export default defineComponent({
 				value: 159,
 				card: {
 					number: '4276 0000 0000 1001',
-					date: '2025-01-01 00:00:00',
+					expiration: '2025-01-01 00:00:00',
 				},
 				date: '2025-01-01 00:00:00',
 			},
@@ -201,7 +226,9 @@ export default defineComponent({
 			profileSettingsStore,
 			payments,
 			formatDate,
-			form,
+			currentPaymentMethod,
+			save,
+			unlinkPaymentMethod
 		}
 	},
 })
