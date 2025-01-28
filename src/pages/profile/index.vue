@@ -5,17 +5,20 @@
 		.col
 			ProfileSubsriptions
 		.col
+			PaymentMethod
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Screen } from 'quasar'
 import ProfileSubsriptions from 'src/components/settings/profile-subscriptions/index.vue'
+import PaymentMethod from 'src/components/settings/payment-method/index.vue'
 
 export default defineComponent({
 	name: 'ProfilePage',
 	components: {
 		ProfileSubsriptions,
+		PaymentMethod,
 	},
 	setup() {
 		return {
