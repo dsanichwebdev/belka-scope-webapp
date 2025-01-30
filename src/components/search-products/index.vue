@@ -10,9 +10,10 @@
 import { defineComponent, ref } from 'vue'
 import AuthModal from 'src/components/auth-modal/index.vue'
 import PhotoInput from 'src/components/photo-input/index.vue'
-import type { SearchProductsData, SearchProductsMethods } from 'src/types/search-products'
+import type { SearchProductsData, SearchProductsMethods, Product } from 'src/types/search-products'
 import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
+import { productsResponse } from '../../mock/products-response.mock';
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -28,9 +29,28 @@ export default defineComponent({
 		const searchMessage = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
+		const searchResponse = ref<Product[]>([])
+
+		// TODO: need move to products store
+		const searchProducts = (photo: string, description: string) => {
+			console.log(photo, description)
+
+			// TODO: some logic for getting products
+
+			// dumb realization
+			return productsResponse;
+		}
+
 		const handleSearch = (): void => {
 			if (!authStore.checkAuth()) {
 				showAuthDialog.value = true
+			} else {
+				// TODO: write logic for getting photo url and description
+				const photo = ''
+				const description = ''
+
+				searchResponse.value = searchProducts(photo, description)
+				console.log(searchResponse.value)
 			}
 		}
 
@@ -59,6 +79,7 @@ export default defineComponent({
 			checkAuth,
 			logIn,
 			handleHide,
+			searchResponse
 		}
 	},
 })
