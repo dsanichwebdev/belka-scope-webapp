@@ -4,6 +4,7 @@
   q-input.q-mt-md.full-width(v-model="searchMessage" type="textarea" filled placeholder="Введите описание товара"  @update:model-value="checkAuth")
   q-btn.full-width.bg-warning.q-mt-md.q-mb-lg(@click="handleSearch" icon="search" no-caps ) Найти
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
+  ProductsList(:products="searchResponse")
 </template>
 
 <script lang="ts">
@@ -14,6 +15,7 @@ import type { SearchProductsData, SearchProductsMethods, Product } from 'src/typ
 import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
 import { productsResponse } from '../../mock/products-response.mock';
+import ProductsList from 'src/components/products-list/index.vue';
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -21,6 +23,7 @@ export default defineComponent({
 	components: {
 		PhotoInput,
 		AuthModal,
+		ProductsList
 	},
 
 	setup(): SearchProductsData & SearchProductsMethods {
