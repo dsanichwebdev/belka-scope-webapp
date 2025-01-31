@@ -15,7 +15,7 @@ import type { SearchProductsData, SearchProductsMethods, Product } from 'src/typ
 import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
 import { productsResponse } from '../../mock/products-response.mock';
-import ProductsList from 'src/components/products-list/index.vue';
+import ProductsList from 'src/components/products/list/index.vue';
 
 export default defineComponent({
 	name: 'SearchProducts',
