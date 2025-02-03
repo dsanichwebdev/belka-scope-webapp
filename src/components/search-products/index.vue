@@ -4,7 +4,7 @@
   q-input.q-mt-md.full-width(v-model="searchMessage" type="textarea" filled placeholder="Введите описание товара"  @update:model-value="checkAuth")
   q-btn.full-width.bg-warning.q-mt-md.q-mb-lg(@click="handleSearch" icon="search" no-caps ) Найти
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
-  ProductsList(:products="searchResponse")
+  ProductsList(:products="searchResponse" hasViewAllButton)
 </template>
 
 <script lang="ts">
