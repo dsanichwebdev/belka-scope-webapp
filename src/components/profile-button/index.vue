@@ -18,14 +18,15 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { authUtil } from 'src/utils/auth.util'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/stores/auth'
 
 export default defineComponent({
 	name: 'ProfileButton',
 
 	setup() {
 		const route = useRouter()
+		const authStore = useAuthStore()
 
 		const avatarUrl = ref<string | null>(null)
 		const defaultAvatar =
@@ -41,7 +42,7 @@ export default defineComponent({
 
 		const logOut = (): void => {
 			console.log('Выход из аккаунта')
-			authUtil.logOut()
+			authStore.logOut()
 		}
 
 		return {

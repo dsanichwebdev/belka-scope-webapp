@@ -9,13 +9,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { authUtil } from 'src/utils/auth.util'
 import AuthModal from '../auth-modal/index.vue'
 import type { AuthService } from 'src/types/auth'
 import type {
 	SearchProductsInputData,
 	SearchProductsInputMethods,
 } from 'src/types/search-products-input'
+import { useAuthStore } from 'src/stores/auth'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
 	name: 'SearchProductsInput',
@@ -36,24 +37,27 @@ export default defineComponent({
 	},
 
 	setup(props): SearchProductsInputData & SearchProductsInputMethods {
+		const authStore = useAuthStore()
+		const router = useRouter()
+
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const checkAuth = (): void => {
-			if (props.needCheckAuth && !authUtil.checkAuth()) {
+			if (props.needCheckAuth && !authStore.checkAuth()) {
 				showAuthDialog.value = true
 			}
 		}
 
 		const logIn = (service: AuthService): void => {
-			authUtil.logIn(service)
-			if (props.needCheckAuth && authUtil.hasProfileData) {
+			authStore.logIn(service)
+			if (props.needCheckAuth && authStore.hasProfileData) {
 				showAuthDialog.value = false
 			}
 		}
 
 		const logOut = (): void => {
-			authUtil.logOut()
+			authStore.logOut()
 		}
 
 		const handleHide = (): void => {
@@ -67,6 +71,7 @@ export default defineComponent({
 
 		const handleSearch = () => {
 			console.log(`Searching for: ${search.value}`)
+			router.push({ name: 'products' })
 		}
 
 		return {

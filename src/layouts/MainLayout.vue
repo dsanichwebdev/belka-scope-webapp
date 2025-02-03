@@ -1,7 +1,7 @@
 <template lang="pug">
 q-layout.flex.items-center.column(view="lHh Lpr lFf")
 	HeaderComponent(v-if="displayHeader")
-	q-page-container.q-pa-lg.full-width(:style="'max-width: 1080px;'")
+	q-page-container.q-pa-lg.full-width(:style="'max-width: 1280px;'")
 		router-view
 </template>
 
