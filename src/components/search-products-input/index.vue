@@ -16,6 +16,7 @@ import type {
 	SearchProductsInputMethods,
 } from 'src/types/search-products-input'
 import { useAuthStore } from 'src/stores/auth'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
 	name: 'SearchProductsInput',
@@ -37,6 +38,7 @@ export default defineComponent({
 
 	setup(props): SearchProductsInputData & SearchProductsInputMethods {
 		const authStore = useAuthStore()
+		const router = useRouter()
 
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
@@ -69,6 +71,7 @@ export default defineComponent({
 
 		const handleSearch = () => {
 			console.log(`Searching for: ${search.value}`)
+			router.push({ name: 'products' })
 		}
 
 		return {
