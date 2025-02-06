@@ -17,6 +17,7 @@ import type {
 } from 'src/types/search-products-input'
 import { useAuthStore } from 'src/stores/auth'
 import { useRouter } from 'vue-router'
+import { checkAndHandleAuth } from '../../utils/auth-utils';
 
 export default defineComponent({
 	name: 'SearchProductsInput',
@@ -43,9 +44,11 @@ export default defineComponent({
 		const search = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
-		const checkAuth = (): void => {
-			if (props.needCheckAuth && !authStore.checkAuth()) {
-				showAuthDialog.value = true
+		const checkAuth = async (): Promise<void> => {
+			if (props.needCheckAuth) {
+				const isAuthorized = await checkAndHandleAuth();
+
+				if (!isAuthorized) showAuthDialog.value = true;
 			}
 		}
 
@@ -69,7 +72,8 @@ export default defineComponent({
 			console.log('uplodaded photo for search')
 		}
 
-		const handleSearch = () => {
+		const handleSearch = async () => {
+			if (props.needCheckAuth && !(await checkAndHandleAuth())) return;
 			console.log(`Searching for: ${search.value}`)
 			router.push({ name: 'products' })
 		}

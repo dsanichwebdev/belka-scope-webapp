@@ -16,6 +16,7 @@ import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
 import ProductsList from 'src/components/products/list/index.vue';
 import { useProductsStore } from '../../stores/products';
+import { checkAndHandleAuth } from '../../utils/auth-utils';
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -35,16 +36,15 @@ export default defineComponent({
 
 		const searchResponse = ref<Product[]>([])
 
-		const handleSearch = (): void => {
-			if (!authStore.checkAuth()) {
-				showAuthDialog.value = true
-			} else {
-				// TODO: write logic for getting photo url and description
+		const handleSearch = async () => {
+			if (await checkAndHandleAuth()) {
 				const photo = ''
 				const description = ''
 
 				searchResponse.value = productsStore.searchProducts(photo, description)
 				console.log(searchResponse.value)
+			} else {
+				showAuthDialog.value = true
 			}
 		}
 
