@@ -1,11 +1,28 @@
 import type { Ref } from 'vue'
 
+export interface ProductMetrics {
+  stock?: number
+  brandsCount?: number
+  suppliersCount?: number
+	sellingProductsPercentage?: number,
+  sellingBrandsPercentage?: number
+  sellingSuppliersPercentage?: number
+  averagePrice?: number
+  averageMargin?: number
+  marketplacePrice?: number
+  rating?: number
+}
+
 export interface Product {
-	title: string
-	image: string
-	seller: string
-	wholesalePrice: number
-	retailPrice: number
+  id?: string
+  title?: string
+  image?: string
+  seller?: string
+  wholesalePrice?: number
+  retailPrice?: number
+  description?: string
+  category?: string
+  mainMetrics?: ProductMetrics
 }
 
 export interface SearchProductsData {
