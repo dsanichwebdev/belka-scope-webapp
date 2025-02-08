@@ -36,4 +36,5 @@ export interface SearchProductsMethods {
 	checkAuth: () => void
 	logIn: (service: AuthService) => void
 	handleHide: () => void
+	updatePhotoUrl: (url: string) => void
 }

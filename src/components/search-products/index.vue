@@ -1,6 +1,6 @@
 <template lang="pug">
 .search-products.full-width
-  PhotoInput
+  PhotoInput(@update-photo-url="updatePhotoUrl")
   q-input.q-mt-md.full-width(v-model="searchMessage" type="textarea" filled placeholder="Введите описание товара"  @update:model-value="checkAuth")
   q-btn.full-width.bg-warning.q-mt-md.q-mb-lg(@click="handleSearch" icon="search" no-caps ) Найти
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
@@ -32,14 +32,19 @@ export default defineComponent({
 		const productsStore = useProductsStore()
 
 		const searchMessage = ref<string>('')
+		const photoUrl = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const searchResponse = ref<Product[]>([])
 
+		const updatePhotoUrl = (url: string) => {
+			photoUrl.value = url
+		}
+
 		const handleSearch = async () => {
 			if (await checkAndHandleAuth()) {
-				const photo = ''
-				const description = ''
+				const photo = photoUrl.value
+				const description = searchMessage.value
 
 				searchResponse.value = productsStore.searchProducts(photo, description)
 				console.log(searchResponse.value)
@@ -73,7 +78,8 @@ export default defineComponent({
 			checkAuth,
 			logIn,
 			handleHide,
-			searchResponse
+			searchResponse,
+			updatePhotoUrl
 		}
 	},
 })
