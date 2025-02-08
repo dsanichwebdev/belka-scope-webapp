@@ -18,8 +18,8 @@ import type { PhotoInputData, PhotoInputMethods } from 'src/types/photo-input'
 
 export default defineComponent({
 	name: 'PhotoInput',
-
-	setup(): PhotoInputData & PhotoInputMethods {
+	emits: ['update-photo-url'],
+	setup(_, { emit }): PhotoInputData & PhotoInputMethods {
 		const photoUrl = ref<string>('')
 		const showFileDialog = ref<boolean>(false)
 
@@ -64,6 +64,7 @@ export default defineComponent({
 				const reader = new FileReader()
 				reader.onload = (e) => {
 					photoUrl.value = e.target?.result as string
+					emit('update-photo-url', photoUrl.value)
 				}
 				reader.readAsDataURL(file)
 			}
@@ -72,6 +73,7 @@ export default defineComponent({
 
 		const handleDeletePhoto = (): void => {
 			photoUrl.value = ''
+			emit('update-photo-url', '')
 		}
 
 		return {
