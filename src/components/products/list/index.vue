@@ -1,13 +1,32 @@
 <template lang="pug">
-.products-list.q-pb-lg.flex.justify-center
-  template(v-if="grid")
+.products-list.q-pb-lg.flex.justify-center(style="position: relative")
+  .q-py-md.justify-end.flex.full-width(v-if="showToggle")
+    q-btn-group(flat rounded)
+      q-btn(
+        flat
+        icon="grid_on"
+        :color="internalGrid ? 'primary' : 'grey-6'"
+        @click="internalGrid = true"
+        padding="sm md"
+        data-testid="grid-btn"
+      )
+      q-btn(
+        flat
+        icon="table_rows"
+        :color="!internalGrid ? 'primary' : 'grey-6'"
+        @click="internalGrid = false"
+        padding="sm md"
+        data-testid="table-btn"
+      )
+
+  template(v-if="internalGrid")
     q-infinite-scroll(@load="onLoad" :offset="250" :disable="!hasMoreData")
       template(#loading)
         .row.justify-center.q-my-md
           q-spinner-dots(color="primary" size="40px")
       .row.q-col-gutter-md
         .col-12.col-sm-6.col-md-2(v-for="product in displayedData" :key="`${product.title} ${product.seller}`")
-          ProductCard.full-width(:product="product" :grid="grid")
+          ProductCard.full-width(:product="product" :grid="internalGrid")
 
   template(v-else)
     template(v-if="hasViewAllButton")
@@ -25,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, type PropType, ref } from 'vue'
+import { defineComponent, computed, type PropType, ref, watch } from 'vue'
 import ProductCard from '../card/index.vue';
 import { type Product } from '../../../types/search-products';
 import { useRouter } from 'vue-router';
@@ -48,11 +67,15 @@ export default defineComponent({
     },
     grid: {
       type: Boolean,
-      default: false
+      default: true
     },
     chunkSize: {
       type: Number,
       default: 6
+    },
+    showToggle: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -60,20 +83,25 @@ export default defineComponent({
     const router = useRouter()
     const loadedChunks = ref(1)
     const isLoading = ref(false)
+    const internalGrid = ref(props.grid)
+
+    watch(() => props.grid, (newVal) => {
+      internalGrid.value = newVal
+    })
 
     const displayedData = computed(() => {
-      if(props.grid) {
+      if(internalGrid.value) {
         return props.products.slice(0, loadedChunks.value * props.chunkSize)
       }
       return props.products
     })
 
     const hasMoreData = computed(() =>
-      props.grid && props.products.length > loadedChunks.value * props.chunkSize
+      internalGrid.value && props.products.length > loadedChunks.value * props.chunkSize
     )
 
     const showViewAllButton = computed(() =>
-      !props.grid && props.products.length > 4 && props.hasViewAllButton
+      !internalGrid.value && props.products.length > 4 && props.hasViewAllButton
     )
 
     const viewAllProductsHandle = () => {
@@ -81,7 +109,7 @@ export default defineComponent({
     }
 
     const onLoad = (index: number, done: (stop?: boolean) => void) => {
-      if(!props.grid || isLoading.value || !hasMoreData.value) {
+      if(!internalGrid.value || isLoading.value || !hasMoreData.value) {
         done(true)
         return
       }
@@ -99,7 +127,8 @@ export default defineComponent({
       hasMoreData,
       showViewAllButton,
       viewAllProductsHandle,
-      onLoad
+      onLoad,
+      internalGrid
     }
   }
 })
