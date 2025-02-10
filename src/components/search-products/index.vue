@@ -1,6 +1,6 @@
 <template lang="pug">
 .search-products.full-width
-  PhotoInput
+  PhotoInput(@update-photo-url="updatePhotoUrl")
   q-input.q-mt-md.full-width(v-model="searchMessage" type="textarea" filled placeholder="Введите описание товара"  @update:model-value="checkAuth")
   q-btn.full-width.bg-warning.q-mt-md.q-mb-lg(@click="handleSearch" icon="search" no-caps ) Найти
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
@@ -14,8 +14,9 @@ import PhotoInput from 'src/components/photo-input/index.vue'
 import type { SearchProductsData, SearchProductsMethods, Product } from 'src/types/search-products'
 import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
-import { productsResponse } from '../../mock/products-response.mock';
 import ProductsList from 'src/components/products/list/index.vue';
+import { useProductsStore } from '../../stores/products';
+import { checkAndHandleAuth } from '../../utils/auth-utils';
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -28,32 +29,27 @@ export default defineComponent({
 
 	setup(): SearchProductsData & SearchProductsMethods {
 		const authStore = useAuthStore()
+		const productsStore = useProductsStore()
 
 		const searchMessage = ref<string>('')
+		const photoUrl = ref<string>('')
 		const showAuthDialog = ref<boolean>(false)
 
 		const searchResponse = ref<Product[]>([])
 
-		// TODO: need move to products store
-		const searchProducts = (photo: string, description: string) => {
-			console.log(photo, description)
-
-			// TODO: some logic for getting products
-
-			// dumb realization
-			return productsResponse;
+		const updatePhotoUrl = (url: string) => {
+			photoUrl.value = url
 		}
 
-		const handleSearch = (): void => {
-			if (!authStore.checkAuth()) {
-				showAuthDialog.value = true
-			} else {
-				// TODO: write logic for getting photo url and description
-				const photo = ''
-				const description = ''
+		const handleSearch = async () => {
+			if (await checkAndHandleAuth()) {
+				const photo = photoUrl.value
+				const description = searchMessage.value
 
-				searchResponse.value = searchProducts(photo, description)
+				searchResponse.value = productsStore.searchProducts(photo, description)
 				console.log(searchResponse.value)
+			} else {
+				showAuthDialog.value = true
 			}
 		}
 
@@ -82,7 +78,8 @@ export default defineComponent({
 			checkAuth,
 			logIn,
 			handleHide,
-			searchResponse
+			searchResponse,
+			updatePhotoUrl
 		}
 	},
 })
