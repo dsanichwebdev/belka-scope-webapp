@@ -23,12 +23,13 @@
     q-card.full-height.q-pa-sm(
       flat
 			bordered
+			:style="'border-radius: 12px;'"
     )
       .row.items-start
         q-img.rounded-borders(
           :src="product.image"
           height="96px"
-          style="max-width: 64px; max-height: 64px;"
+          style="border-radius: 12px; max-width: 64px; max-height: 64px;"
         )
         .col.q-ml-sm
           .row.flex.items-center

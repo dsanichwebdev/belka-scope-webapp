@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, type PropType, ref, watch } from 'vue'
+import { defineComponent, computed, type PropType, ref, watch, onMounted } from 'vue'
 import ProductCard from '../card/index.vue';
 import { type Product } from '../../../types/search-products';
 import { useRouter } from 'vue-router';
@@ -67,7 +67,7 @@ export default defineComponent({
     },
     grid: {
       type: Boolean,
-      default: true
+      default: undefined
     },
     chunkSize: {
       type: Number,
@@ -83,14 +83,31 @@ export default defineComponent({
     const router = useRouter()
     const loadedChunks = ref(1)
     const isLoading = ref(false)
-    const internalGrid = ref(props.grid)
+    const internalGrid = ref<boolean>(true)
+
+    onMounted(() => {
+      if (props.grid !== undefined) {
+        internalGrid.value = props.grid
+      } else {
+        const savedGrid = localStorage.getItem('productViewMode')
+        internalGrid.value = savedGrid === 'list' ? false : true
+      }
+    })
 
     watch(() => props.grid, (newVal) => {
-      internalGrid.value = newVal
+      if (newVal !== undefined) {
+        internalGrid.value = newVal
+      }
+    })
+
+    watch(internalGrid, (newVal) => {
+      if (props.grid === undefined) {
+        localStorage.setItem('productViewMode', newVal ? 'grid' : 'list')
+      }
     })
 
     const displayedData = computed(() => {
-      if(internalGrid.value) {
+      if (internalGrid.value) {
         return props.products.slice(0, loadedChunks.value * props.chunkSize)
       }
       return props.products
@@ -109,7 +126,7 @@ export default defineComponent({
     }
 
     const onLoad = (index: number, done: (stop?: boolean) => void) => {
-      if(!internalGrid.value || isLoading.value || !hasMoreData.value) {
+      if (!internalGrid.value || isLoading.value || !hasMoreData.value) {
         done(true)
         return
       }
