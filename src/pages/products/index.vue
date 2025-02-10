@@ -1,6 +1,6 @@
 <template lang="pug">
 .products-page
-	ProductsList.q-mt-md(:products="products" grid)
+	ProductsList.q-mt-md(:products="products" :grid="true" :showToggle="true")
 </template>
 
 <script lang="ts">
