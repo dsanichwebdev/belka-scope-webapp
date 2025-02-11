@@ -1,5 +1,5 @@
 <template lang="pug">
-.products-detailspage.q-pa-lg
+.products-detailspage.q-py-lg
   q-breadcrumbs.q-mb-lg(gutter="sm")
     q-breadcrumbs-el(label="Главная" to="/")
     q-breadcrumbs-el(label="Каталог" to="/products")
@@ -7,16 +7,16 @@
 
   .row.q-col-gutter-xl
     .col-12.col-md-4
-      q-card.bg-white.rounded-borders.q-pa-sm
-        q-img(
-          :src="product.image"
-          :ratio="1"
-          fit="contain"
-          class="rounded-borders"
-          spinner-color="primary"
-        )
-          template(v-slot:loading)
-            q-skeleton(height="100%" animation="fade")
+      q-img(
+        :src="product.image"
+        :ratio="1"
+        fit="contain"
+        class="rounded-borders"
+        spinner-color="primary"
+				style="border-radius: 24px;"
+      )
+        template(v-slot:loading)
+          q-skeleton(height="100%" animation="fade")
 
     .col-12.col-md-8
       q-rating.q-mb-sm(
@@ -30,7 +30,7 @@
           .text-h4.text-weight-bold {{ product.title }}
           .text-subtitle1.text-grey-7.q-mt-xs {{ product.category || 'Без категории' }}
 
-        q-card-section
+        q-card-section.q-pa-none
           .row.q-col-gutter-md
             .col-12.col-sm-6.col-md-6.col-lg-4(
               v-for="metric in mainMetrics"
@@ -42,12 +42,12 @@
                 :icon="metric.icon"
                 :color="metric.color"
               )
-        q-card-section
+        q-card-section.q-pa-none
           .text-h6.q-mb-md Описание
           .text-body1(v-if="product.description") {{ product.description }}
           .text-caption.text-grey-7(v-else) Нет описания товара
-        q-card-section
-          q-card.bg-white.rounded-borders.q-pa-md
+        q-card-section.q-pa-none
+          q-card.bg-white.rounded-borders.q-pa-md.cursor-pointer(:style="'border-radius: 12px;'")
             .text-h6.q-mb-md Продавец {{product.seller}}
             .row.items-center
               .col-12.col-sm-6.full-width.q-gutter-y-md
