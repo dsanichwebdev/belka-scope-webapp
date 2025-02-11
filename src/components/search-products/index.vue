@@ -4,7 +4,7 @@
   q-input.q-mt-md.full-width(v-model="searchMessage" type="textarea" filled placeholder="Введите описание товара"  @update:model-value="checkAuth")
   q-btn.full-width.bg-warning.q-mt-md.q-mb-lg(@click="handleSearch" icon="search" no-caps ) Найти
   AuthModal(:isVisible="showAuthDialog" :login="logIn" :close="handleHide")
-  ProductsList(:products="searchResponse" hasViewAllButton :grid="false")
+  ProductsList(:products="searchResponse" hasViewAllButton :grid="false" :minimizeCards="true")
 </template>
 
 <script lang="ts">
@@ -14,9 +14,9 @@ import PhotoInput from 'src/components/photo-input/index.vue'
 import type { SearchProductsData, SearchProductsMethods, Product } from 'src/types/search-products'
 import type { AuthService } from 'src/types/auth'
 import { useAuthStore } from 'src/stores/auth'
-import ProductsList from 'src/components/products/list/index.vue';
-import { useProductsStore } from '../../stores/products';
-import { checkAndHandleAuth } from '../../utils/auth-utils';
+import ProductsList from 'src/components/products/list/index.vue'
+import { useProductsStore } from '../../stores/products'
+import { checkAndHandleAuth } from '../../utils/auth-utils'
 
 export default defineComponent({
 	name: 'SearchProducts',
@@ -24,7 +24,7 @@ export default defineComponent({
 	components: {
 		PhotoInput,
 		AuthModal,
-		ProductsList
+		ProductsList,
 	},
 
 	setup(): SearchProductsData & SearchProductsMethods {
@@ -79,7 +79,7 @@ export default defineComponent({
 			logIn,
 			handleHide,
 			searchResponse,
-			updatePhotoUrl
+			updatePhotoUrl,
 		}
 	},
 })
